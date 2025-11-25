@@ -14,7 +14,7 @@
 			"label": "Steam Wallet Code 5$",
 			"price": 142000,
 			"sold": 10000,
-			"tag": "Ưu đãi",
+			"status": 1,
 			"save": "-2.00%"
 		},
 		{
@@ -22,7 +22,7 @@
 			"label": "Steam Wallet Code 10$",
 			"price": 284000,
 			"sold": 10000,
-			"tag": "Ưu đãi",
+			"statu": 1,
 			"save": "-2.00%"
 		},
 		{
@@ -30,7 +30,7 @@
 			"label": "CS2 Prime",
 			"price": 426000,
 			"sold": 10000,
-			"tag": "Ưu đãi",
+			"statu": 1,
 			"save": "-15%"
 		}
 	],

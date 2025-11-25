@@ -15,8 +15,8 @@ const leagueSpartan = League_Spartan({
 
 export const metadata: Metadata = {
 	title: {
-		default: "Muakey Store",
-		template: "%s | Muakey Store",
+		default: "Muacode.com Store",
+		template: "%s | Muacode.com Store",
 	},
 	description: "Trang bán key, giftcard, game và dịch vụ số.",
 };

@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import store from "@/data/store.json";
+import servicesData from "@/data/services.json";
 
 type Service = { id: string; title: string; description: string; cta: string };
 
-const data = store as { services: Service[] };
+const data = servicesData as { services: Service[] };
 
 export const metadata: Metadata = {
 	title: "Dịch vụ",
@@ -29,6 +29,7 @@ const ServicesPage = () => {
 				{data.services.map((service) => (
 					<div
 						key={service.id}
+						id={service.id}
 						className="rounded-xl border border-surface-600 bg-surface-700 p-5 shadow-soft transition hover:-translate-y-1 hover:border-ink-50/40">
 						<h2 className="text-lg font-semibold text-ink-50">
 							{service.title}

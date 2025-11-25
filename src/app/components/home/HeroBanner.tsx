@@ -9,8 +9,8 @@ type HeroBannerProps = {
 };
 
 const HeroBanner = ({
-	primaryImage = "/assets/placeholder-card.svg",
-	secondaryImage = "/assets/placeholder-card.svg",
+	primaryImage = "https://pub-f0a6dec73e084e83be3f5ea518ee5da7.r2.dev/cs2prime.jpg",
+	secondaryImage = "https://pub-f0a6dec73e084e83be3f5ea518ee5da7.r2.dev/cs2prime.jpg",
 }: HeroBannerProps) => {
 	return (
 		<section className="grid gap-5 lg:grid-cols-[1.5fr,1fr]">
@@ -35,7 +35,7 @@ const HeroBanner = ({
 							src={primaryImage}
 							alt="Promo"
 							fill
-							className="object-cover transition-transform duration-300 hover:scale-110"
+							className="object-cover transition-transform duration-300 hover:scale-105"
 						/>
 					</div>
 				</div>

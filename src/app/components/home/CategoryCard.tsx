@@ -79,7 +79,6 @@ const CategoryCard = ({
 						href={item.href || href}
 						className="rounded-2xl border border-surface-600 bg-surface-700 p-3 text-ink-50 shadow-soft transition hover:border-primary-900/70">
 						<p className="text-sm font-semibold">{item.title}</p>
-						<p className="text-xs text-ink-200/50">{item.tag}</p>
 					</Link>
 				))}
 			</div>

@@ -2,7 +2,7 @@
 	"title": "Account Game",
 	"region": "Vietnam",
 	"guarantee": "Giao ngay",
-	"image": "https://pub-f0a6dec73e084e83be3f5ea518ee5da7.r2.dev/steam5usd.png",
+	"image": "https://pub-f0a6dec73e084e83be3f5ea518ee5da7.r2.dev/lol-pbe.png",
 	"notes": [
 		"Account LOL PBE",
 		"Account Valorant night market",
@@ -15,21 +15,21 @@
 			"price": 5000,
 			"sold": 10000,
 			"tag": "Ưu đãi",
-			"save": "-2.00%"
+			"save": "-20%"
 		},
 		{
 			"id": "valorant9market",
 			"label": "Account Valorant night market",
 			"price": 15000,
-			"sold": 10000,
+			"sold": 1000,
 			"tag": "Ưu đãi",
-			"save": "-2.00%"
+			"save": "-2%"
 		},
 		{
 			"id": "valorantlv20",
 			"label": "Account Valorant Lv20",
 			"price": 50000,
-			"sold": 10000,
+			"sold": 1000,
 			"tag": "Ưu đãi",
 			"save": "-15%"
 		}

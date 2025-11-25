@@ -1,22 +1,16 @@
 {
 	"services": [
 		{
-			"id": "topup-card",
-			"title": "Top up cards & e-wallets",
-			"description": "Support Viettel, Mobi, Vina, Momo, ViettelPay with great rates.",
-			"cta": "Send request"
+			"id": "visa",
+			"title": "Visa/Mastercard",
+			"description": "Hỗ trợ thanh toán quốc tế qua Visa/Mastercard với tỷ giá tốt.",
+			"cta": "Liên hệ"
 		},
 		{
-			"id": "gift-consult",
-			"title": "Corporate giftcard consulting",
-			"description": "Bulk digital gift codes with invoices upon request.",
-			"cta": "Get quote"
-		},
-		{
-			"id": "account-verify",
-			"title": "Game account verification",
-			"description": "Check and secure Steam, Riot, EA accounts.",
-			"cta": "Book schedule"
+			"id": "crypto",
+			"title": "Crypto",
+			"description": "Mua bán, hỗ trợ nhận, gửi tiền điện tử nhanh chóng.",
+			"cta": "Liên hệ"
 		}
 	]
 }

@@ -29,9 +29,6 @@ const CheckoutPage = () => {
 	return (
 		<div className="space-y-6">
 			<header className="rounded-2xl border border-surface-600 bg-surface-700 p-6 shadow-soft">
-				<p className="text-xs font-semibold uppercase tracking-[0.3em] text-ink-50">
-					Giỏ hàng
-				</p>
 				<h1 className="mt-2 text-2xl font-bold text-ink-50">
 					Thanh toán đơn hàng
 				</h1>
@@ -121,7 +118,7 @@ const CheckoutPage = () => {
 								placeholder="you@example.com"
 								value={email}
 								onChange={(e) => setEmail(e.target.value)}
-								className="w-full rounded-lg border border-ink-700 bg-surface-700 px-3 py-2 text-ink-50 placeholder:text-ink-100/50 focus:border-ink-50 focus:outline-none"
+								className="w-full rounded-xl border border-ink-700 bg-surface-700 px-3 py-2 text-ink-50 placeholder:text-ink-100/50 focus:border-ink-50 focus:outline-none"
 							/>
 						</div>
 						<div className="space-y-1">
@@ -136,10 +133,10 @@ const CheckoutPage = () => {
 								value={note}
 								onChange={(e) => setNote(e.target.value)}
 								placeholder="Ví dụ: yêu cầu xuất hoá đơn, đổi giờ giao..."
-								className="w-full rounded-lg border border-ink-700 bg-surface-700 px-3 py-2 text-ink-50 placeholder:text-ink-100/50 focus:border-ink-50 focus:outline-none"
+								className="w-full rounded-xl border border-ink-700 bg-surface-700 px-3 py-2 text-ink-50 placeholder:text-ink-100/50 focus:border-ink-50 focus:outline-none"
 							/>
 						</div>
-						<div className="rounded-lg border border-surface-600 bg-ink-800/60 p-3 text-sm text-ink-100/80">
+						<div className="rounded-xl border border-surface-600 bg-ink-800/60 p-3 text-sm text-ink-100/80">
 							<div className="flex items-center justify-between">
 								<span>Tạm tính</span>
 								<span className="font-semibold text-ink-50">
@@ -156,7 +153,7 @@ const CheckoutPage = () => {
 						<button
 							type="submit"
 							disabled={items.length === 0}
-							className="w-full rounded-lg bg-ink-100 px-4 py-3 text-sm font-semibold text-ink-900 transition hover:-translate-y-0.5 hover:bg-ink-50 disabled:cursor-not-allowed disabled:bg-ink-700 disabled:text-ink-100">
+							className="w-full rounded-3xl bg-ink-100 px-4 py-3 text-sm font-semibold text-ink-900 transition hover:-translate-y-0.5 hover:bg-ink-50 disabled:cursor-not-allowed disabled:bg-ink-700 disabled:text-ink-100">
 							Thanh toán
 						</button>
 						{message && (

@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useMemo, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 
@@ -42,7 +43,7 @@ type ProductItem = {
 	title: string;
 	price?: number;
 	sold?: number;
-	tag?: string;
+	tag?: boolean;
 	image?: string;
 	region?: string;
 };
@@ -69,10 +70,9 @@ const buildProducts = () =>
 			(source.variants || []).map((variant) => ({
 				id: `${categoryId}-${variant.id}`,
 				categoryId,
-				title: `${source.title}: ${variant.label}`,
+				title: `${variant.label}`,
 				price: variant.price,
 				sold: variant.sold,
-				tag: variant.tag,
 				image: source.image,
 				region: source.region,
 			})),
@@ -126,9 +126,7 @@ const ProductsPage = () => {
 
 			<div className="grid gap-4 lg:grid-cols-[260px,1fr]">
 				<aside className="rounded-2xl border border-surface-600 bg-surface-700 p-4 shadow-soft">
-					<p className="text-sm font-semibold text-ink-50">
-						Danh mục
-					</p>
+					<p className="text-lg font-normal text-ink-50">Danh mục</p>
 					<div className="mt-3 space-y-2">
 						{categories.map((cat) => {
 							const active = activeCategory === cat.id;
@@ -141,7 +139,7 @@ const ProductsPage = () => {
 								<button
 									key={cat.id}
 									onClick={() => setActiveCategory(cat.id)}
-									className={`flex w-full items-center justify-between rounded-3xl px-3 py-2 text-sm font-semibold transition ${
+									className={`flex w-full items-center justify-between rounded-3xl px-3 py-2 text-sm font-thin transition ${
 										active
 											? "bg-ink-800 text-ink-50"
 											: "text-ink-100/80 hover:bg-ink-800"
@@ -177,9 +175,10 @@ const ProductsPage = () => {
 					<div className="rounded-2xl border border-surface-600 bg-surface-700 p-4 shadow-soft">
 						<div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
 							{filteredProducts.map((product) => (
-								<div
+								<Link
 									key={product.id}
-									className="flex flex-col rounded-3xl border border-surface-600 bg-surface-700 p-2 transition hover:-translate-y-1 hover:border-surface-200/60">
+									href={`/products/${product.categoryId}`}
+									className="flex flex-col rounded-3xl border border-surface-600 bg-surface-700 p-2 transition hover:border-surface-200/60">
 									<div className="relative h-40 w-full overflow-hidden rounded-2xl">
 										<Image
 											src={
@@ -198,24 +197,21 @@ const ProductsPage = () => {
 										<p className="text-xs text-ink-200/70">
 											{product.region || "Region: -"}
 										</p>
-										<p className="text-sm font-bold text-primary-200">
+										<p className="text-sm font-normal text-primary-200">
 											{formatPrice(product.price)}
 										</p>
-										<div className="flex items-center gap-2 text-xs text-ink-200/70">
-											<span className="rounded-full bg-ink-800 px-2 py-1 text-[11px] text-ink-50">
-												{product.tag || "Hot"}
-											</span>
-											<span className="ml-auto">
+										<div className="flex items-center gap-2 text-xs text-ink-200/50">
+											<span>
 												Đã bán {product.sold ?? 0}
 											</span>
 										</div>
 									</div>
-								</div>
+								</Link>
 							))}
 						</div>
 						{filteredProducts.length === 0 && (
-							<p className="mt-4 text-sm text-ink-200/70">
-								Khong tim thay san pham phu hop.
+							<p className="text-sm text-ink-200/70">
+								Không tìm thấy sản phẩm phù hợp.
 							</p>
 						)}
 					</div>

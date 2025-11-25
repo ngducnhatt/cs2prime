@@ -5,7 +5,7 @@ const Footer = () => {
 		<footer className="mt-12 border-t border-surface-600 bg-surface-700/90 py-8">
 			<div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 md:flex-row md:justify-between">
 				<div>
-					<p className="text-lg font-semibold">MuaCode.com</p>
+					<p className="text-lg font-semibold">Muacode.com</p>
 					<p className="mt-2 max-w-md text-sm text-ink-200/50">
 						Nền tảng mua bán key steam, giftcard steam, code steam
 						wallet; dịch vụ game và tài khoản game, value game.
@@ -39,9 +39,9 @@ const Footer = () => {
 							Liên hệ
 						</Link>
 						<a
-							href="mailto:support@muakey.local"
+							href="mailto:support@Muacode.com.local"
 							className="block text-ink-200/50 hover:text-ink-200/80">
-							support@muacode.com
+							support@Muacode.com
 						</a>
 					</div>
 					<div className="space-y-2">
@@ -53,7 +53,7 @@ const Footer = () => {
 				</div>
 			</div>
 			<p className="mt-8 text-center text-xs text-ink-100/60">
-				© 2025 MuaCode.com | All rights reserved.
+				© 2025 Muacode.com | All rights reserved.
 			</p>
 		</footer>
 	);

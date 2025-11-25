@@ -1,20 +1,17 @@
 "use client";
-import Link from "next/link";
+
 import Image from "next/image";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import { useCart } from "@/app/context/CartContext";
-import { IoIosCart } from "react-icons/io";
+import productsData from "@/data/products.json";
+import servicesData from "@/data/services.json";
 import { CiMenuBurger } from "react-icons/ci";
-const navLinks = [
-	{ label: "Steam", href: "/products/steam" },
-	{ label: "CSGOEmpire", href: "/products/csgoempire" },
-	{ label: "Duel", href: "/products/duel" },
-	{ label: "Mua/Bán thẻ cào", href: "/products/mobilecards" },
-	{ label: "Faceit", href: "/products/faceit" },
-	{ label: "Tin tức", href: "/news" },
-];
+import { IoIosCart } from "react-icons/io";
+
+type NavLinkItem = { label: string; href: string };
 
 const Header = () => {
 	const pathname = usePathname();
@@ -22,11 +19,32 @@ const Header = () => {
 	const { items } = useCart();
 	const cartCount = items.reduce((sum, item) => sum + item.quantity, 0);
 
+	const navLinks: NavLinkItem[] = useMemo(() => {
+		const productLinks =
+			(productsData.categories || []).map((cat: any) => ({
+				label: cat.label,
+				href: cat.href || `/products/${cat.id}`,
+			})) || [];
+
+		const serviceLinks =
+			(servicesData.services || []).map((svc: any) => ({
+				label: svc.title,
+				href: `/services#${svc.id}`,
+			})) || [];
+
+		return [...productLinks, ...serviceLinks];
+	}, []);
+
+	const isActive = (href: string) => {
+		const pathOnly = href.split("#")[0];
+		return pathname === pathOnly;
+	};
+
 	return (
 		<header className="sticky top-0 z-40 border-b border-surface-600 bg-surface-700/90 backdrop-blur">
-			<div className="hidden border-b border-surface-600 bg-surface-700  px-4 py-2 text-xs text-ink-200/50 md:block">
+			<div className="hidden border-b border-surface-600 bg-surface-700 px-4 py-2 text-xs text-ink-200/50 md:block">
 				<div className="mx-auto flex max-w-6xl items-center justify-between">
-					<div className="flex gap-4 ">
+					<div className="flex gap-4">
 						<Link href="/news" className="hover:text-ink-100">
 							Tin tức
 						</Link>
@@ -68,7 +86,7 @@ const Header = () => {
      md:border-none md:bg-transparent md:p-0 md:shadow-none`}
 					aria-label="Điều hướng">
 					{navLinks.map((link, idx) => {
-						const active = pathname === link.href;
+						const active = isActive(link.href);
 						return (
 							<Link
 								key={`${link.href}-${idx}`}
@@ -83,11 +101,11 @@ const Header = () => {
 							</Link>
 						);
 					})}
-					<div className=" items-start mt-2 flex flex-col gap-2 border-t border-surface-600 pt-3 md:hidden">
+					<div className="mt-2 flex flex-col gap-2 border-t border-surface-600 pt-3 md:hidden">
 						<Link
 							href="/checkout"
 							onClick={() => setOpen(false)}
-							className="flex items-center gap-2 rounded-full border border-surface-600 px-4 py-2  transition hover:border-ink-100">
+							className="flex items-center gap-2 rounded-full border border-surface-600 px-4 py-2 transition hover:border-ink-100">
 							<IoIosCart />
 							{cartCount >= 0 && (
 								<span className="rounded-full bg-ink-100 px-2 py-1 text-xs font-bold text-[#0b0b0b]">
@@ -107,7 +125,7 @@ const Header = () => {
 				<div className="hidden items-center gap-3 md:flex">
 					<Link
 						href="/checkout"
-						className="flex items-center gap-2 rounded-full border border-surface-600 px-4 py-2  transition hover:border-ink-100">
+						className="flex items-center gap-2 rounded-full border border-surface-600 px-4 py-2 transition hover:border-ink-100">
 						<IoIosCart />
 						{cartCount >= 0 && (
 							<span className="rounded-full bg-ink-100 px-2 py-1 text-xs font-bold text-[#0b0b0b]">

@@ -1,9 +1,8 @@
 {
 	"categories": [
-		{ "id": "all", "label": "Tất cả", "count": 120, "href": "/products" },
 		{
 			"id": "steam",
-			"label": "Steam",
+			"label": "Steam Wallet Code",
 			"sold": 30,
 			"href": "/products/steam"
 		},
@@ -14,10 +13,10 @@
 			"href": "/products/csgoempire"
 		},
 		{
-			"id": "mobilecards",
-			"label": "Mobile Cards",
-			"sold": 25,
-			"href": "/products/mobilecards"
+			"id": "duel",
+			"label": "Duel.com",
+			"sold": 15,
+			"href": "/products/duel"
 		},
 		{
 			"id": "faceit",
@@ -26,134 +25,17 @@
 			"href": "/products/faceit"
 		},
 		{
-			"id": "duel",
-			"label": "Duel.com",
-			"sold": 15,
-			"href": "/products/duel"
+			"id": "mobilecards",
+			"label": "Mua/Bán thẻ cào",
+			"sold": 25,
+			"href": "/products/mobilecards"
 		},
-        {
+
+		{
 			"id": "accountgame",
 			"label": "Tài khoản game",
 			"sold": 15,
 			"href": "/products/accountgame"
-		}
-	],
-
-	"categoryProducts": [
-		{
-			"id": "steam5",
-			"title": "Steam Wallet 5 USD",
-			"region": "Vietname",
-			"categoryId": "steam",
-			"image": "/assets/placeholder-card.svg"
-		},
-		{
-			"id": "steam10",
-			"title": "Steam Wallet 10 USD",
-			"region": "Vietname",
-			"categoryId": "steam",
-			"image": "/assets/placeholder-card.svg"
-		},
-		{
-			"id": "steamprime",
-			"title": "CS2 Prime (Steam Wallet Code",
-			"region": "Vietname",
-			"categoryId": "steam",
-			"image": "/assets/placeholder-card.svg"
-		},
-		{
-			"id": "csgoempirebuy",
-			"title": "Mua coin CSGOEmpire",
-			"region": "Global",
-			"categoryId": "csgoempire",
-			"image": "/assets/placeholder-card.svg"
-		},
-		{
-			"id": "csgoempiresell",
-			"title": "Bán coin CSGOEmpire",
-			"region": "Global",
-			"categoryId": "csgoempire",
-			"image": "/assets/placeholder-card.svg"
-		},
-
-		{
-			"id": "duelbuy",
-			"title": "Mua value Duel.com",
-			"region": "Global",
-			"categoryId": "duel",
-			"image": "/assets/placeholder-card.svg"
-		},
-		{
-			"id": "duelsell",
-			"title": "Bán value Duel.com",
-			"region": "Global",
-			"categoryId": "duel",
-			"image": "/assets/placeholder-card.svg"
-		},
-
-		{
-			"id": "viettel",
-			"title": "Mua/Bán card Viettel",
-			"region": "Vietnam",
-			"categoryId": "mobilecards",
-			"image": "/assets/placeholder-card.svg"
-		},
-		{
-			"id": "mobifone",
-			"title": "Mua/Bán card Mobifone",
-			"region": "Vietnam",
-			"categoryId": "mobilecards",
-			"image": "/assets/placeholder-card.svg"
-		},
-		{
-			"id": "vinaphone",
-			"title": "Mua/Bán card Vinaphone",
-			"region": "Vietnam",
-			"categoryId": "mobilecards",
-			"image": "/assets/placeholder-card.svg"
-		},
-		{
-			"id": "vcoin",
-			"title": "Mua card Vcoin",
-			"region": "Vietnam",
-			"categoryId": "mobilecards",
-			"image": "/assets/placeholder-card.svg"
-		},
-		{
-			"id": "garena",
-			"title": "Mua card Garena",
-			"region": "Global",
-			"categoryId": "mobilecards",
-			"image": "/assets/placeholder-card.svg"
-		},
-
-		{
-			"id": "faceit-premium-1",
-			"title": "Faceit Premium 1 tháng",
-			"region": "Global",
-			"categoryId": "faceit",
-			"image": "/assets/placeholder-card.svg"
-		},
-		{
-			"id": "faceit-premium-3",
-			"title": "Faceit Premium 3 tháng",
-			"region": "Global",
-			"categoryId": "faceit",
-			"image": "/assets/placeholder-card.svg"
-		},
-		{
-			"id": "faceit-plus-1",
-			"title": "Faceit Plus 1 tháng",
-			"region": "Global",
-			"categoryId": "faceit",
-			"image": "/assets/placeholder-card.svg"
-		},
-		{
-			"id": "faceit-plus-12",
-			"title": "Faceit Plus 12 tháng",
-			"region": "Global",
-			"categoryId": "faceit",
-			"image": "/assets/placeholder-card.svg"
 		}
 	]
 }
