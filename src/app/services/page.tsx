@@ -5,6 +5,8 @@ export const metadata: Metadata = {
 	title: "Dịch vụ",
 };
 
+export const revalidate = 0;
+
 const ServicesPage = async () => {
 	const data = await fetchServices();
 

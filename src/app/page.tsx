@@ -16,6 +16,8 @@ export const metadata: Metadata = {
 	title: "Muacode.com",
 };
 
+export const revalidate = 0;
+
 const buildCategoryItems = (
 	categories: Awaited<ReturnType<typeof fetchCategories>>,
 ) =>
