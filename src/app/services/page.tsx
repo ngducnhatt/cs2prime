@@ -1,15 +1,13 @@
 import type { Metadata } from "next";
-import servicesData from "@/data/services.json";
-
-type Service = { id: string; title: string; description: string; cta: string };
-
-const data = servicesData as { services: Service[] };
+import { fetchServices } from "@/lib/data";
 
 export const metadata: Metadata = {
 	title: "Dịch vụ",
 };
 
-const ServicesPage = () => {
+const ServicesPage = async () => {
+	const data = await fetchServices();
+
 	return (
 		<div className="space-y-6">
 			<header className="rounded-2xl border border-surface-600 bg-surface-700 p-6 shadow-soft">
@@ -20,13 +18,12 @@ const ServicesPage = () => {
 					Dịch vụ tiện ích
 				</h1>
 				<p className="text-sm text-ink-100/80">
-					Nạp thẻ, tư vấn giftcard, cài đặt từ xa và hỗ trợ bảo mật
-					tài khoản.
+					Nạp thẻ, tư vấn giftcard, cài đặt từ xa và hỗ trợ bảo mật tài khoản.
 				</p>
 			</header>
 
 			<div className="grid gap-4 md:grid-cols-3">
-				{data.services.map((service) => (
+				{data.map((service) => (
 					<div
 						key={service.id}
 						id={service.id}
@@ -39,8 +36,9 @@ const ServicesPage = () => {
 						</p>
 						<button
 							type="button"
-							className="mt-4 rounded-lg border border-ink-700 px-4 py-2 text-sm font-semibold text-ink-50 hover:-translate-y-0.5 hover:border-ink-50">
-							{service.cta}
+							className="mt-4 rounded-lg border border-ink-700 px-4 py-2 text-sm font-semibold text-ink-50 hover:-translate-y-0.5 hover:border-ink-50"
+							disabled={service.status === false}>
+							{service.status === false ? "Tạm hết" :  "Liên hệ"}
 						</button>
 					</div>
 				))}

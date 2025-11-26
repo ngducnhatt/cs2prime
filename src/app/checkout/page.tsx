@@ -33,8 +33,7 @@ const CheckoutPage = () => {
 					Thanh toán đơn hàng
 				</h1>
 				<p className="text-sm text-ink-100/80">
-					Nhập email để nhận key/giftcard ngay sau khi hoàn tất thanh
-					toán.
+					Nhập email để nhận key/giftcard ngay sau khi hoàn tất thanh toán.
 				</p>
 			</header>
 
@@ -65,6 +64,11 @@ const CheckoutPage = () => {
 										<p className="text-sm text-ink-100/80">
 											{item.price}
 										</p>
+										{item.note && (
+											<p className="text-xs text-ink-200/70">
+												Ghi chú: {item.note}
+											</p>
+										)}
 									</div>
 									<div className="flex items-center gap-2">
 										<label

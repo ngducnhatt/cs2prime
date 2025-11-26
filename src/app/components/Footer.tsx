@@ -7,8 +7,8 @@ const Footer = () => {
 				<div>
 					<p className="text-lg font-semibold">Muacode.com</p>
 					<p className="mt-2 max-w-md text-sm text-ink-200/50">
-						Nền tảng mua bán key steam, giftcard steam, code steam
-						wallet; dịch vụ game và tài khoản game, value game.
+						Nền tảng mua bán key Steam, giftcard Steam, code Steam
+						Wallet; dịch vụ game và tài khoản game, value game.
 						Thanh toán nhanh, nhận hàng trong vài giây.
 					</p>
 				</div>
@@ -26,7 +26,7 @@ const Footer = () => {
 							Dịch vụ
 						</Link>
 						<Link
-							href="/blog"
+							href="/news"
 							className="block text-ink-200/50 hover:text-ink-200/80">
 							Tin tức
 						</Link>
@@ -39,9 +39,9 @@ const Footer = () => {
 							Liên hệ
 						</Link>
 						<a
-							href="mailto:support@Muacode.com.local"
+							href="mailto:support@muacode.com"
 							className="block text-ink-200/50 hover:text-ink-200/80">
-							support@Muacode.com
+							support@muacode.com
 						</a>
 					</div>
 					<div className="space-y-2">

@@ -3,11 +3,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { useCart } from "@/app/context/CartContext";
-import productsData from "@/data/products.json";
-import servicesData from "@/data/services.json";
+import { fetchNavigation } from "@/lib/data";
 import { CiMenuBurger } from "react-icons/ci";
 import { IoIosCart } from "react-icons/io";
 
@@ -16,23 +15,31 @@ type NavLinkItem = { label: string; href: string };
 const Header = () => {
 	const pathname = usePathname();
 	const [open, setOpen] = useState(false);
+	const [navLinks, setNavLinks] = useState<NavLinkItem[]>([]);
 	const { items } = useCart();
-	const cartCount = items.reduce((sum, item) => sum + item.quantity, 0);
+	const [hydrated, setHydrated] = useState(false);
+	const cartCount = useMemo(
+		() => items.reduce((sum, item) => sum + item.quantity, 0),
+		[items],
+	);
 
-	const navLinks: NavLinkItem[] = useMemo(() => {
-		const productLinks =
-			(productsData.categories || []).map((cat: any) => ({
-				label: cat.label,
-				href: cat.href || `/products/${cat.id}`,
-			})) || [];
+	useEffect(() => {
+		let mounted = true;
+		fetchNavigation()
+			.then((links) => {
+				if (mounted) setNavLinks(links);
+			})
+			.catch((err) => {
+				console.error("fetchNavigation failed", err);
+				if (mounted) setNavLinks([]);
+			});
+		return () => {
+			mounted = false;
+		};
+	}, []);
 
-		const serviceLinks =
-			(servicesData.services || []).map((svc: any) => ({
-				label: svc.title,
-				href: `/services#${svc.id}`,
-			})) || [];
-
-		return [...productLinks, ...serviceLinks];
+	useEffect(() => {
+		setHydrated(true);
 	}, []);
 
 	const isActive = (href: string) => {
@@ -62,9 +69,10 @@ const Header = () => {
 				<Link href="/">
 					<Image
 						src="https://pub-f0a6dec73e084e83be3f5ea518ee5da7.r2.dev/logo.png"
-						alt="Logo"
+						alt="Muacode logo"
 						width={32}
 						height={32}
+						style={{ height: "auto", width: "auto" }}
 						priority
 						onClick={() => setOpen(false)}
 					/>
@@ -107,7 +115,7 @@ const Header = () => {
 							onClick={() => setOpen(false)}
 							className="flex items-center gap-2 rounded-full border border-surface-600 px-4 py-2 transition hover:border-ink-100">
 							<IoIosCart />
-							{cartCount >= 0 && (
+							{hydrated && cartCount > 0 && (
 								<span className="rounded-full bg-ink-100 px-2 py-1 text-xs font-bold text-[#0b0b0b]">
 									{cartCount}
 								</span>
@@ -127,7 +135,7 @@ const Header = () => {
 						href="/checkout"
 						className="flex items-center gap-2 rounded-full border border-surface-600 px-4 py-2 transition hover:border-ink-100">
 						<IoIosCart />
-						{cartCount >= 0 && (
+						{hydrated && cartCount > 0 && (
 							<span className="rounded-full bg-ink-100 px-2 py-1 text-xs font-bold text-[#0b0b0b]">
 								{cartCount}
 							</span>
