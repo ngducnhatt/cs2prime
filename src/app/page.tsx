@@ -52,7 +52,7 @@ export default async function Home() {
 	]);
 
 	return (
-		<div className="space-y-10">
+		<div className=" px-4 py-10 md:py-12 space-y-10">
 			<HeroBanner />
 			<SaleCard deals={deals} />
 			<PorpularCard

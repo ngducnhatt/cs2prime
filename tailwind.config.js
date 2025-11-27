@@ -4,6 +4,7 @@ module.exports = {
 	theme: {
 		extend: {
 			colors: {
+				// màu brand chính
 				primary: {
 					50: "#e7e9f2",
 					100: "#cfd3e5",
@@ -16,6 +17,13 @@ module.exports = {
 					800: "#21498a",
 					900: "#0062FF",
 				},
+				// màu nền tổng thể
+				background: {
+					950: "#020617", // body bg
+					900: "#020617",
+					800: "#020617",
+				},
+				// màu chữ
 				ink: {
 					50: "#ffffff",
 					100: "#f5f5f5",
@@ -28,6 +36,7 @@ module.exports = {
 					800: "#262626",
 					900: "#171717",
 				},
+				// màu “vật thể” / card / surface
 				surface: {
 					50: "#c4c4c4",
 					100: "#a7a7a7",
@@ -67,6 +76,15 @@ module.exports = {
 			},
 			borderRadius: {
 				xl: "12px",
+			},
+			fontFamily: {
+				sans: [
+					"League Spartan Fallback",
+					"system-ui",
+					"-apple-system",
+					"Segoe UI",
+					"sans-serif",
+				],
 			},
 		},
 	},

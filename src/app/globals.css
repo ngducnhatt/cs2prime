@@ -3,25 +3,62 @@
 @tailwind utilities;
 
 :root {
-  color-scheme: dark;
+	color-scheme: dark;
 }
 
 * {
-  box-sizing: border-box;
+	box-sizing: border-box;
 }
 
-body {
-  margin: 0;
-  background:
-    radial-gradient(circle at 12% 18%, rgba(105, 105, 105, 0.08), transparent 28%),
-    radial-gradient(circle at 82% 6%, rgba(64, 64, 64, 0.12), transparent 32%),
-    linear-gradient(145deg, #121212, #040404 45%, #000000);
-  color: #ffffff;
-  font-family: var(--font-league-spartan), "League Spartan Fallback", system-ui, -apple-system, "Segoe UI", sans-serif;
-  min-height: 100vh;
+@layer base {
+	html,
+	body {
+        @apply font-normal;
+		margin: 0;
+		background: radial-gradient(
+				circle at 12% 18%,
+				rgba(105, 105, 105, 0.08),
+				transparent 28%
+			),
+			radial-gradient(
+				circle at 82% 6%,
+				rgba(64, 64, 64, 0.12),
+				transparent 32%
+			),
+			linear-gradient(145deg, #121212, #040404 45%, #000000);
+		color: #ffffff;
+		font-family: var(--font-league-spartan), "League Spartan Fallback",
+			system-ui, -apple-system, "Segoe UI", sans-serif;
+		min-height: 100vh;
+	}
+     /* Typography base */
+
 }
+@layer utilities {
+  .border-white-custom {
+    @apply border border-surface-400;
+  }
+}
+/* body {
+	margin: 0;
+	background: radial-gradient(
+			circle at 12% 18%,
+			rgba(105, 105, 105, 0.08),
+			transparent 28%
+		),
+		radial-gradient(
+			circle at 82% 6%,
+			rgba(64, 64, 64, 0.12),
+			transparent 32%
+		),
+		linear-gradient(145deg, #121212, #040404 45%, #000000);
+	color: #ffffff;
+	font-family: var(--font-league-spartan), "League Spartan Fallback",
+		system-ui, -apple-system, "Segoe UI", sans-serif;
+	min-height: 100vh;
+} */
 
 a {
-  color: inherit;
-  text-decoration: none;
+	color: inherit;
+	text-decoration: none;
 }

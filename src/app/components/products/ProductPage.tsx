@@ -16,7 +16,6 @@ import type {
 
 const CACHE_TTL = 60_000;
 const placeholderImg = "/assets/placeholder-card.svg";
-const categoryId = "steam";
 
 type Detail = {
 	hero: {
@@ -28,6 +27,13 @@ type Detail = {
 	};
 	variants: (ProductVariant & { status?: boolean })[];
 	description: ProductSection[];
+};
+
+type ProductPageProps = {
+	categoryId: string;
+	allowNote?: boolean;
+	noteLabel?: string;
+	notePlaceholder?: string;
 };
 
 const toBooleanStatus = (value: unknown) => {
@@ -54,7 +60,7 @@ const normalizeDetail = (data: ProductSource | null): Detail | null => {
 	};
 };
 
-const readCacheDetail = (): Detail | null => {
+const readCacheDetail = (categoryId: string): Detail | null => {
 	if (typeof window === "undefined") return null;
 	try {
 		const raw = sessionStorage.getItem(`cache_detail_${categoryId}`);
@@ -67,7 +73,7 @@ const readCacheDetail = (): Detail | null => {
 	}
 };
 
-const writeCacheDetail = (value: Detail) => {
+const writeCacheDetail = (categoryId: string, value: Detail) => {
 	if (typeof window === "undefined") return;
 	try {
 		sessionStorage.setItem(
@@ -82,43 +88,47 @@ const writeCacheDetail = (value: Detail) => {
 const formatPrice = (value: number) =>
 	value.toLocaleString("vi-VN", { style: "currency", currency: "VND" });
 
-const SteamPage = () => {
+const ProductPage = ({ categoryId, allowNote = false }: ProductPageProps) => {
 	const { addToCart } = useCart();
-	const initialDetail = readCacheDetail();
-	const [detail, setDetail] = useState<Detail | null>(initialDetail);
+	const [detail, setDetail] = useState<Detail | null>(null);
 	const [quantity, setQuantity] = useState(1);
-	const [selected, setSelected] = useState(
-		initialDetail?.variants[0]?.id ?? "",
-	);
+	const [selected, setSelected] = useState("");
+	const [note] = useState("");
 	const [error, setError] = useState<string | null>(null);
 
 	useEffect(() => {
 		let mounted = true;
+
+		const cached = readCacheDetail(categoryId);
+		if (cached && mounted) {
+			setDetail(cached);
+			setSelected(cached.variants[0]?.id ?? "");
+		}
 
 		fetchProductDetail(categoryId)
 			.then((data) => {
 				if (!mounted) return;
 				const normalized = normalizeDetail(data);
 				if (!normalized) {
-					setError("Khong tim thay san pham.");
+					setError("KhA'ng tA�m th���y s���n ph��cm.");
 					return;
 				}
 				setDetail(normalized);
 				setSelected(normalized.variants[0]?.id ?? "");
-				writeCacheDetail(normalized);
+				writeCacheDetail(categoryId, normalized);
 			})
 			.catch((err) => {
 				if (!mounted) return;
 				setError(
-					err?.message ||
-						"Khong tai duoc du lieu san pham, vui long thu lai.",
+					err.message ||
+						"KhA'ng t���i �`�����c d��_ li���u s���n ph��cm.",
 				);
 			});
 
 		return () => {
 			mounted = false;
 		};
-	}, []);
+	}, [categoryId]);
 
 	const selectedItem = useMemo(() => {
 		if (!detail) return undefined;
@@ -138,9 +148,10 @@ const SteamPage = () => {
 					name: `${detail.hero.title} - ${selectedItem.label}`,
 					price: selectedItem.price
 						? formatPrice(selectedItem.price)
-						: "Lien he",
+						: "LiA�n h���",
 					image: detail.hero.image,
 					categoryId,
+					note: allowNote && note ? note : undefined,
 				},
 				quantity,
 			);
@@ -158,7 +169,7 @@ const SteamPage = () => {
 	if (!detail) {
 		return (
 			<div className="rounded-2xl border border-surface-600 bg-surface-700 p-6 text-ink-50">
-				Dang tai du lieu san pham...
+				�?ang t���i d��_ li���u s���n ph��cm...
 			</div>
 		);
 	}
@@ -190,4 +201,4 @@ const SteamPage = () => {
 	);
 };
 
-export default SteamPage;
+export default ProductPage;

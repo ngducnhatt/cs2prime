@@ -1,12 +1,7 @@
-import ProductDetailTemplate from "../ProductDetailTemplate";
+"use client";
 
-const FaceitPage = () => {
-	return (
-		<ProductDetailTemplate
-			categoryId="faceit"
-			allowNote
-		/>
-	);
-};
+import ProductPage from "@/app/components/products/ProductPage";
+
+const FaceitPage = () => <ProductPage categoryId="faceit" allowNote />;
 
 export default FaceitPage;

@@ -1,12 +1,9 @@
-import ProductDetailTemplate from "../ProductDetailTemplate";
+"use client";
 
-const AccountGamePage = () => {
-	return (
-		<ProductDetailTemplate
-			categoryId="accountgame"
-			allowNote={false}
-		/>
-	);
-};
+import ProductPage from "@/app/components/products/ProductPage";
+
+const AccountGamePage = () => (
+	<ProductPage categoryId="accountgame" allowNote={false} />
+);
 
 export default AccountGamePage;

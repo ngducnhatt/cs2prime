@@ -1,12 +1,9 @@
-import ProductDetailTemplate from "../ProductDetailTemplate";
+"use client";
 
-const CsgoEmpirePage = () => {
-	return (
-		<ProductDetailTemplate
-			categoryId="csgoempire"
-			allowNote
-		/>
-	);
-};
+import ProductPage from "@/app/components/products/ProductPage";
+
+const CsgoEmpirePage = () => (
+	<ProductPage categoryId="csgoempire" allowNote />
+);
 
 export default CsgoEmpirePage;
