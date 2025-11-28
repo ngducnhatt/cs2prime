@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useActionState } from "react";
 import { FormState, sendTelegramOrder } from "@/app/actions/telegram";
-import { TelegramOrderFormProps } from "@/lib/types";
+import { OrderFormProps } from "@/lib/types";
 import { SubmitButton } from "@/app/components/SubmitButton";
 import Image from "next/image";
 import { HiddenOrderFields } from "./HiddenOrderFields";
@@ -10,7 +10,7 @@ import { AmountInput } from "./AmountInput";
 import { SellIdInput } from "./SellIdInput";
 import { OrderConfirmation } from "./OrderConfirmation";
 
-export const BuyForm = ({ selectedItem }: TelegramOrderFormProps) => {
+export const BuyForm = ({ selectedItem }: OrderFormProps) => {
 	const [orderId] = useState(() => `MUACODE${Date.now()}`);
 	const initialState: FormState = { message: "", success: false, errors: {} };
 	const [state, formAction] = useActionState(sendTelegramOrder, initialState);
@@ -31,9 +31,7 @@ export const BuyForm = ({ selectedItem }: TelegramOrderFormProps) => {
 			const qrAccount = "1122102102";
 			const qrAddInfo = `${state.data.orderId}`;
 			const qrLink = `https://img.vietqr.io/image/${qrBank}-${qrAccount}-compact.png?amount=${state.data.totalAmount}&addInfo=${qrAddInfo}`;
-			// eslint-disable-next-line react-hooks/set-state-in-effect
 			setQrCodeValue(qrLink);
-			// eslint-disable-next-line react-hooks/set-state-in-effect
 			setShowQrPopup(true);
 		}
 	}, [state]);

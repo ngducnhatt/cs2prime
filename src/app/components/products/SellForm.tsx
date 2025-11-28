@@ -2,7 +2,7 @@
 
 import React, { useState, useActionState } from "react";
 import { FormState, sendTelegramOrder } from "@/app/actions/telegram";
-import { TelegramOrderFormProps } from "@/lib/types";
+import { OrderFormProps } from "@/lib/types";
 import { SubmitButton } from "@/app/components/SubmitButton";
 import { HiddenOrderFields } from "./HiddenOrderFields";
 import { AmountInput } from "./AmountInput";
@@ -12,7 +12,7 @@ import { OrderConfirmation } from "./OrderConfirmation";
 export const SellForm = ({
 	selectedItem,
 	banks = [],
-}: TelegramOrderFormProps) => {
+}: OrderFormProps) => {
 	const [orderId] = useState(() => `MUACODE${Date.now()}`);
 	const initialState: FormState = { message: "", success: false, errors: {} };
 	const [state, formAction] = useActionState(sendTelegramOrder, initialState);
