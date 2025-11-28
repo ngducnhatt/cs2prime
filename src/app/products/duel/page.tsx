@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import ProductDescription from "@/app/components/products/ProductDescription";
 import ProductImage from "@/app/components/products/ProductImage";
-import TelegramOrderForm from "@/app/components/products/TelegramOrderForm";
+import OrderForm from "@/app/components/products/OrderForm";
 import ProductVariants from "@/app/components/products/ProductList";
 import { fetchBanks, fetchProductDetail } from "@/lib/data";
 import type { Bank, ProductSource, ProductVariant } from "@/lib/types";
@@ -102,7 +102,10 @@ const DuelPage = () => {
 					return;
 				}
 				setDetail(normalized);
-				if (!selected || !normalized.variants.some(v => v.id === selected)) {
+				if (
+					!selected ||
+					!normalized.variants.some((v) => v.id === selected)
+				) {
 					setSelected(normalized.variants[0]?.id ?? "");
 				}
 				writeCacheDetail(normalized);
@@ -166,15 +169,11 @@ const DuelPage = () => {
 					<ProductDescription description={detail.description} />
 				</div>
 				<div className="space-y-6">
-					<TelegramOrderForm
-						selectedItem={selectedItem}
-						banks={banks}
-					/>
+					<OrderForm selectedItem={selectedItem} banks={banks} />
 				</div>
 			</div>
 		</div>
 	);
 };
-
 
 export default DuelPage;

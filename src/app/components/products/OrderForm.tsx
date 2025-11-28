@@ -1,13 +1,10 @@
 "use client";
 
-import { TelegramOrderFormProps } from "@/lib/types";
+import { OrderFormProps } from "@/lib/types";
 import { BuyForm } from "./BuyForm";
 import { SellForm } from "./SellForm";
 
-const TelegramOrderForm = ({
-	selectedItem,
-	banks = [],
-}: TelegramOrderFormProps) => {
+const OrderForm = ({ selectedItem, banks = [] }: OrderFormProps) => {
 	if (!selectedItem) {
 		return null;
 	}
@@ -21,4 +18,4 @@ const TelegramOrderForm = ({
 	return <SellForm selectedItem={selectedItem} banks={banks} />;
 };
 
-export default TelegramOrderForm;
+export default OrderForm;

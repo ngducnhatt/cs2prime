@@ -42,9 +42,20 @@ export type ProductSection = { title: string; body: string[] };
 
 export type RelatedProduct = { title: string; image?: string };
 
-export type Service = { id: string; title: string; description: string; status?: boolean };
+export type Service = {
+	id: string;
+	title: string;
+	description: string;
+	status?: boolean;
+};
 
-export type Post = { id: string; title: string; content: string; excerpt?: string; date: string };
+export type Post = {
+	id: string;
+	title: string;
+	content: string;
+	excerpt?: string;
+	date: string;
+};
 
 export type ProductListItem = {
 	id: string;
@@ -58,7 +69,7 @@ export type ProductListItem = {
 	image?: string;
 };
 
-export type TelegramOrderFormProps = {
+export type OrderFormProps = {
 	selectedItem: ProductVariant;
 	banks?: Bank[];
 };

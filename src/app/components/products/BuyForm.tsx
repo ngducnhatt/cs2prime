@@ -1,10 +1,14 @@
 "use client";
 
-import { useState, useEffect, useActionState, useRef } from "react";
+import { useState, useEffect, useActionState } from "react";
 import { FormState, sendTelegramOrder } from "@/app/actions/telegram";
 import { TelegramOrderFormProps } from "@/lib/types";
 import { SubmitButton } from "@/app/components/SubmitButton";
 import Image from "next/image";
+import { HiddenOrderFields } from "./HiddenOrderFields";
+import { AmountInput } from "./AmountInput";
+import { SellIdInput } from "./SellIdInput";
+import { OrderConfirmation } from "./OrderConfirmation";
 
 export const BuyForm = ({ selectedItem }: TelegramOrderFormProps) => {
 	const [orderId] = useState(() => `MUACODE${Date.now()}`);
@@ -18,111 +22,54 @@ export const BuyForm = ({ selectedItem }: TelegramOrderFormProps) => {
 	const [sellId, setSellId] = useState("");
 	const [submissionKey, setSubmissionKey] = useState(0);
 
-	const showQrPopup = state.success && state.data;
-	let qrCodeValue = "";
-	if (showQrPopup && state.data) {
-		const qrBank = "970407"; // Techcombank BIN
-		const qrAccount = "1122102102";
-		const qrAddInfo = `${state.data.orderId}`;
-		qrCodeValue = `https://img.vietqr.io/image/${qrBank}-${qrAccount}-compact.png?amount=${state.data.totalAmount}&addInfo=${qrAddInfo}`;
-	}
+	const [showQrPopup, setShowQrPopup] = useState(false);
+	const [qrCodeValue, setQrCodeValue] = useState("");
+
+	useEffect(() => {
+		if (state.success && state.data) {
+			const qrBank = "970407"; // Techcombank BIN
+			const qrAccount = "1122102102";
+			const qrAddInfo = `${state.data.orderId}`;
+			const qrLink = `https://img.vietqr.io/image/${qrBank}-${qrAccount}-compact.png?amount=${state.data.totalAmount}&addInfo=${qrAddInfo}`;
+			// eslint-disable-next-line react-hooks/set-state-in-effect
+			setQrCodeValue(qrLink);
+			// eslint-disable-next-line react-hooks/set-state-in-effect
+			setShowQrPopup(true);
+		}
+	}, [state]);
 
 	const handleClosePopup = () => {
+		setShowQrPopup(false);
 		setAmount(10);
 		setSellId("");
 		setSubmissionKey(Date.now());
 	};
 
-	const formatPrice = (value: number) =>
-		value.toLocaleString("vi-VN", { style: "currency", currency: "VND" });
-
 	return (
 		<div className="rounded-2xl border border-surface-600 bg-surface-700 px-5 shadow-soft">
 			<form key={submissionKey} action={formAction} className="space-y-4">
-				<input
-					type="hidden"
-					name="productName"
-					value={selectedItem.label}
-				/>
-				<input type="hidden" name="unitPrice" value={unitPrice} />
-				<input type="hidden" name="totalAmount" value={totalAmount} />
-				<input type="hidden" name="orderId" value={orderId} />
-				<input
-					type="hidden"
-					name="selectedItemId"
-					value={selectedItem.id}
+				<HiddenOrderFields
+					selectedItem={selectedItem}
+					unitPrice={unitPrice}
+					totalAmount={totalAmount}
+					orderId={orderId}
 				/>
 
-				<div className="space-y-1 pt-1">
-					<label
-						className="block text-sm font-medium text-ink-50"
-						htmlFor="order-amount">
-						Số lượng (tối thiểu 10)
-					</label>
-					<input
-						className="w-full px-3 border border-surface-600 rounded-2xl bg-surface-800 text-ink-100 focus:outline-none focus:ring-2 focus:ring-accent-500"
-						id="order-amount"
-						name="amount"
-						type="number"
-						min="10"
-						value={amount}
-						onChange={(e) => setAmount(Number(e.target.value))}
-						required
-					/>
-					{state.errors?.amount && (
-						<p className="text-sm text-red-500">
-							{state.errors.amount[0]}
-						</p>
-					)}
-				</div>
+				<AmountInput
+					amount={amount}
+					setAmount={setAmount}
+					error={state.errors?.amount}
+				/>
+				<SellIdInput
+					sellId={sellId}
+					setSellId={setSellId}
+					error={state.errors?.sellId}
+				/>
 
-				<div className="space-y-1">
-					<label
-						className="block text-sm font-medium text-ink-50"
-						htmlFor="order-id">
-						ID Bán (id steam)
-					</label>
-					<input
-						className="w-full px-3 border border-surface-600 rounded-2xl bg-surface-800 text-ink-100 focus:outline-none focus:ring-2 focus:ring-accent-500"
-						id="order-id"
-						name="id"
-						type="text"
-						required
-						value={sellId}
-						onChange={(e) => setSellId(e.target.value)}
-					/>
-					{state.errors?.sellId && (
-						<p className="text-sm text-red-500">
-							{state.errors.sellId[0]}
-						</p>
-					)}
-				</div>
-
-				<div className="mb-6 pt-3 border-t border-surface-600">
-					<div className="text-lg font-semibold text-ink-50 mb-4">
-						Xác nhận đơn hàng
-					</div>
-					<div className="space-y-3">
-						<div className="flex justify-between items-center text-sm">
-							<span className="text-ink-100">Sản phẩm</span>
-							<span className="font-medium text-ink-50">
-								{selectedItem.label}
-							</span>
-						</div>
-						<div className="flex justify-between items-center text-sm">
-							<span className="text-ink-100">Đơn giá</span>
-							<span className="font-medium text-ink-50">
-								{formatPrice(unitPrice)}
-							</span>
-						</div>
-						<div className="flex justify-between items-center text-base font-semibold pt-2 border-t border-surface-600">
-							<span className="text-ink-50">Thành tiền</span>
-							<span className="text-accent-500">
-								{formatPrice(totalAmount)}
-							</span>
-						</div>
-					</div>
-				</div>
+				<OrderConfirmation
+					selectedItem={selectedItem}
+					totalAmount={totalAmount}
+				/>
 				<SubmitButton />
 
 				{state.message && (
@@ -159,3 +106,4 @@ export const BuyForm = ({ selectedItem }: TelegramOrderFormProps) => {
 		</div>
 	);
 };
+

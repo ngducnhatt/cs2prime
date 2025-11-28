@@ -37,6 +37,10 @@ const toBooleanStatus = (value: unknown) => {
 const hasMojibake = (text?: string | null) =>
 	!!text && (text.includes("�") || /A�|cA3|mA�/.test(text));
 
+// --- Fallback Data ---
+// The following objects are used as a temporary workaround for data integrity
+// issues in the database, such as mojibake (garbled text). The long-term
+// solution is to clean the data at the source.
 const categoryNameFallback: Record<string, string> = {
 	steam: "Steam Wallet Code",
 	csgoempire: "CSGO Empire",

@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import ProductDescription from "@/app/components/products/ProductDescription";
 import ProductImage from "@/app/components/products/ProductImage";
-import TelegramOrderForm from "@/app/components/products/TelegramOrderForm";
+import OrderForm from "@/app/components/products/OrderForm";
 import ProductVariants from "@/app/components/products/ProductList";
 import { fetchBanks, fetchProductDetail } from "@/lib/data";
 import type { Bank, ProductSource, ProductVariant } from "@/lib/types";
@@ -130,10 +130,7 @@ const CsgoEmpirePage = () => {
 					<ProductDescription description={detail.description} />
 				</div>
 				<div className="space-y-6">
-					<TelegramOrderForm
-						selectedItem={selectedItem}
-						banks={banks}
-					/>
+					<OrderForm selectedItem={selectedItem} banks={banks} />
 				</div>
 			</div>
 		</div>

@@ -7,25 +7,34 @@ import { z } from "zod";
 const botToken = process.env.TELEGRAM_BOT_TOKEN;
 const chatId = process.env.TELEGRAM_CHAT_ID;
 
-// --- Input Validation Schema ---
-const OrderSchema = z.object({
+// --- Input Validation Schemas ---
+const BaseOrderSchema = z.object({
 	productName: z.string(),
 	unitPrice: z.coerce.number(),
 	totalAmount: z.coerce.number(),
 	amount: z.coerce.number().min(1, "Số lượng không hợp lệ"),
 	sellId: z.string().min(1, "ID Bán là bắt buộc"),
-	bank: z.string().optional(),
-	account: z.string().optional(),
-	accountName: z.string().optional(),
 	orderId: z.string(),
 	selectedItemId: z.string(),
+});
+
+const BuyOrderSchema = BaseOrderSchema;
+
+const SellOrderSchema = BaseOrderSchema.extend({
+	bank: z.string().min(1, "Ngân hàng là bắt buộc."),
+	account: z.string().min(1, "Số tài khoản là bắt buộc."),
+	accountName: z.string().min(1, "Tên tài khoản là bắt buộc."),
 });
 
 export type FormState = {
 	message: string;
 	errors?: Record<string, string[] | undefined>;
 	success: boolean;
-	data?: z.infer<typeof OrderSchema>;
+	data?: z.infer<typeof BaseOrderSchema> & {
+		bank?: string;
+		account?: string;
+		accountName?: string;
+	};
 	timestamp?: number;
 };
 
@@ -43,7 +52,13 @@ export async function sendTelegramOrder(
 		};
 	}
 
-	const validatedFields = OrderSchema.safeParse({
+	const selectedItemId = formData.get("selectedItemId") as string;
+	const isBuyOrder =
+		selectedItemId === "duelbuy" || selectedItemId === "empirebuy";
+
+	const schema = isBuyOrder ? BuyOrderSchema : SellOrderSchema;
+
+	const validatedFields = schema.safeParse({
 		productName: formData.get("productName"),
 		unitPrice: formData.get("unitPrice"),
 		totalAmount: formData.get("totalAmount"),
@@ -70,49 +85,24 @@ export async function sendTelegramOrder(
 		totalAmount,
 		amount,
 		sellId,
-		bank,
-		account,
-		accountName,
 		orderId,
-		selectedItemId,
 	} = validatedFields.data;
-
-	// Conditional validation for bank details
-	if (selectedItemId !== "duelbuy" && selectedItemId !== "empirebuy") {
-		if (!bank) {
-			return {
-				message: "Ngân hàng là bắt buộc.",
-				success: false,
-				errors: { bank: ["Ngân hàng là bắt buộc."] },
-			};
-		}
-		if (!account) {
-			return {
-				message: "Số tài khoản là bắt buộc.",
-				success: false,
-				errors: { account: ["Số tài khoản là bắt buộc."] },
-			};
-		}
-		if (!accountName) {
-			return {
-				message: "Tên tài khoản là bắt buộc.",
-				success: false,
-				errors: { accountName: ["Tên tài khoản là bắt buộc."] },
-			};
-		}
-	}
 
 	const formatPrice = (value: number) =>
 		value.toLocaleString("vi-VN", { style: "currency", currency: "VND" });
 
-	const bankInfo = `
-**Ngân hàng:** \`${bank || "?"}\`
-**Số tài khoản:** \`${account || "?"}\`
-**Tên chủ tài khoản:** \`${accountName || "?"}\`
-`;
-
 	// --- Format the message for Telegram ---
-	let messageText = `
+	let bankInfo = "";
+	if (!isBuyOrder) {
+		const { bank, account, accountName } = validatedFields.data as z.infer<typeof SellOrderSchema>;
+		bankInfo = `
+**Ngân hàng:** \`${bank}\`
+**Số tài khoản:** \`${account}\`
+**Tên chủ tài khoản:** \`${accountName}\`
+`;
+	}
+
+	const messageText = `
 ĐƠN HÀNG MỚI
 **Order ID:** \`${orderId}\`
 **Sản phẩm:** ***${productName}***
@@ -121,11 +111,7 @@ export async function sendTelegramOrder(
 **THÀNH TIỀN:** \`${formatPrice(totalAmount)}\`
 --------------------
 **ID Bán:** \`${sellId}\`
-${
-	selectedItemId !== "duelbuy" && selectedItemId !== "empirebuy"
-		? bankInfo
-		: ""
-}
+${bankInfo}
 --------------------
 `;
 
