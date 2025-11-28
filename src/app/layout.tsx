@@ -19,6 +19,11 @@ export const metadata: Metadata = {
 		default: "Muacode.com - Mua code game, thẻ game, wallet uy tín",
 		template: "%s | Muacode.com",
 	},
+	icons: {
+		icon: "/favicon.ico",
+		shortcut: "/favicon.ico",
+		apple: "/favicon.ico",
+	},
 	description:
 		"Nền tảng mua bán key Steam, giftcard Steam, code Steam Wallet; dịch vụ game và tài khoản game uy tín. Thanh toán nhanh, nhận hàng trong vài giây.",
 	keywords: [
