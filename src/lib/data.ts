@@ -39,76 +39,96 @@ export const fetchHeroSections = async (): Promise<HeroSlide[]> => {
 	const supabase = getSupabaseClient();
 	if (!supabase) return [];
 
-	const { data, error } = await supabase
-		.from("hero_sections")
-		.select(
-			"title,subtitle,description,image,href,ctalabel,status,priority,created_at",
-		)
-		.eq("status", true)
-		.order("priority", { ascending: true })
-		.order("created_at", { ascending: true });
+	try {
+		const { data, error } = await supabase
+			.from("hero_sections")
+			.select(
+				"title,subtitle,description,image,href,ctalabel,status,priority,created_at",
+			)
+			.eq("status", true)
+			.order("priority", { ascending: true })
+			.order("created_at", { ascending: true });
 
-	if (error) {
-		console.error("fetchHeroSections error:", error);
+		if (error) {
+			console.error("fetchHeroSections error:", error.message);
+			return [];
+		}
+
+		return (data || []).map((row) => ({
+			title: row.title?.trim() || "",
+			subtitle: row.subtitle || "",
+			description: row.description || "",
+			image: row.image?.trim() || "",
+			href: row.href?.trim() || "/",
+			ctalabel: row.ctalabel?.trim() || "Mua ngay",
+		}));
+	} catch (err) {
+		console.error("fetchHeroSections exception:", err);
 		return [];
 	}
-
-	return (data || []).map((row) => ({
-		title: row.title?.trim() || "",
-		subtitle: row.subtitle || "",
-		description: row.description || "",
-		image: row.image?.trim() || "",
-		href: row.href?.trim() || "/",
-		ctalabel: row.ctalabel?.trim() || "Mua ngay",
-	}));
 };
 
 export const fetchCategories = async (): Promise<Category[]> => {
 	const supabase = getSupabaseClient();
 	if (!supabase) return [];
 
-	const { data, error } = await supabase
-		.from("categories")
-		.select("id,name,sold,image,description")
-		.order("created_at");
+	try {
+		const { data, error } = await supabase
+			.from("categories")
+			.select("id,name,sold,image,description")
+			.order("created_at");
 
-	if (error) {
-		console.error("fetchCategories error:", error);
+		if (error) {
+			console.error("fetchCategories error:", error.message);
+			return [];
+		}
+
+		return (data || []).map((row) => ({
+			id: row.id,
+			name: row.name || "",
+			href: `/products/${row.id}`,
+			sold: row.sold,
+			image: row.image,
+			description: row.description
+				? String(row.description)
+						.split("\n")
+						.map((line) => line.trim())
+						.filter(Boolean)
+				: [],
+		}));
+	} catch (err) {
+		console.error("fetchCategories exception:", err);
 		return [];
 	}
-
-	return (data || []).map((row) => ({
-		id: row.id,
-		name: row.name || "",
-		href: `/products/${row.id}`,
-		sold: row.sold,
-		image: row.image,
-		description: row.description
-			? String(row.description)
-					.split("\n")
-					.map((line) => line.trim())
-					.filter(Boolean)
-			: [],
-	}));
 };
 
 export const fetchServices = async (): Promise<Service[]> => {
 	const supabase = getSupabaseClient();
 	if (!supabase) return [];
 
-	const { data, error } = await supabase
-		.from("services")
-		.select("id,name,description,status,image")
-		.order("name");
+	try {
+		const { data, error } = await supabase
+			.from("services")
+			.select("id, name, description, status, created_at") // Chỉ lấy cột cần thiết
+			.eq("status", true) // QUAN TRỌNG: Chỉ lấy dịch vụ đang bật
+			.order("created_at", { ascending: true }); // Sắp xếp cũ -> mới
 
-	if (error) return [];
+		if (error) {
+			console.error("fetchServices error:", error.message);
+			return [];
+		}
 
-	return (data || []).map((row) => ({
-		id: row.id,
-		title: row.name || "",
-		description: row.description || "",
-		status: toBooleanStatus(row.status),
-	}));
+		return (data || []).map((row) => ({
+			id: row.id,
+			// Hỗ trợ cả trường 'name' hoặc 'title' tùy database của bạn
+			title: row.name,
+			description: row.description || "",
+			status: toBooleanStatus(row.status),
+		}));
+	} catch (err) {
+		console.error("fetchServices exception:", err);
+		return [];
+	}
 };
 
 export const fetchPosts = async (): Promise<Post[]> => {
@@ -141,22 +161,30 @@ export const fetchAllProducts = async (): Promise<ProductListItem[]> => {
 	const supabase = getSupabaseClient();
 	if (!supabase) return [];
 
-	const { data, error } = await supabase
-		.from("products")
-		.select("id,category_id,name,price,sold,sale,status,image");
+	try {
+		const { data, error } = await supabase
+			.from("products")
+			.select("id,category_id,name,price,sold,sale,status,image");
 
-	if (error) return [];
+		if (error) {
+			console.error("fetchAllProducts error:", error.message);
+			return [];
+		}
 
-	return (data || []).map((row) => ({
-		id: `${row.category_id}-${row.id}`,
-		categoryId: row.category_id,
-		title: row.name || "",
-		price: row.price,
-		sold: Number(row.sold ?? 0),
-		save: row.sale ? `${row.sale}%` : undefined,
-		status: toBooleanStatus(row.status),
-		image: row.image,
-	}));
+		return (data || []).map((row) => ({
+			id: `${row.category_id}-${row.id}`,
+			categoryId: row.category_id,
+			title: row.name || "",
+			price: row.price,
+			sold: Number(row.sold ?? 0),
+			save: row.sale ? `${row.sale}%` : undefined,
+			status: toBooleanStatus(row.status),
+			image: row.image,
+		}));
+	} catch (err) {
+		console.error("fetchAllProducts exception:", err);
+		return [];
+	}
 };
 
 export const fetchPopularProducts = async () => {
@@ -195,41 +223,49 @@ export const fetchProductDetail = async (
 	const supabase = getSupabaseClient();
 	if (!supabase) return null;
 
-	// Fetch Category Info
-	const { data: catData, error: catErr } = await supabase
-		.from("categories")
-		.select("id,name,sold,image,description")
-		.eq("id", categoryId)
-		.single();
+	try {
+		// Fetch Category Info
+		const { data: catData, error: catErr } = await supabase
+			.from("categories")
+			.select("id,name,sold,image,description")
+			.eq("id", categoryId)
+			.single();
 
-	if (catErr || !catData) return null;
+		if (catErr || !catData) {
+			// console.warn("fetchProductDetail (cat) error:", catErr); // Optional log
+			return null;
+		}
 
-	// Fetch Variants (Products in category)
-	const { data: prodData, error: prodErr } = await supabase
-		.from("products")
-		.select("id,category_id,name,price,sold,sale,status,image")
-		.eq("category_id", categoryId);
+		// Fetch Variants (Products in category)
+		const { data: prodData, error: prodErr } = await supabase
+			.from("products")
+			.select("id,category_id,name,price,sold,sale,status,image")
+			.eq("category_id", categoryId);
 
-	if (prodErr) console.error(prodErr);
+		if (prodErr) console.error("fetchProductDetail (prod) error:", prodErr);
 
-	const variants: ProductVariant[] = (prodData || []).map((v) => ({
-		id: v.id,
-		label: v.name || "",
-		price: v.price,
-		sold: v.sold,
-		save: v.sale ? `${v.sale}%` : undefined,
-		status: toBooleanStatus(v.status),
-	}));
+		const variants: ProductVariant[] = (prodData || []).map((v) => ({
+			id: v.id,
+			label: v.name || "",
+			price: v.price,
+			sold: v.sold,
+			save: v.sale ? `${v.sale}%` : undefined,
+			status: toBooleanStatus(v.status),
+		}));
 
-	return {
-		title: catData.name || "",
-		image: catData.image,
-		guarantee: "", // Có thể bổ sung trường này trong DB nếu cần
-		notes: [],
-		variants,
-		description: catData.description || "",
-		related: [],
-	};
+		return {
+			title: catData.name || "",
+			image: catData.image,
+			guarantee: "",
+			notes: [],
+			variants,
+			description: catData.description || "",
+			related: [],
+		};
+	} catch (err) {
+		console.error("fetchProductDetail exception:", err);
+		return null;
+	}
 };
 
 export const fetchNavigation = async () => {

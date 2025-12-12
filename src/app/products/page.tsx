@@ -106,7 +106,7 @@ const ProductsPage = () => {
 	}, [activeCategory, products, search]);
 
 	return (
-		<div className="px-4 space-y-6">
+		<div className="p-4 space-y-6">
 			<div className="relative w-full max-w-md">
 				<input
 					type="text"
@@ -120,8 +120,8 @@ const ProductsPage = () => {
 				</span>
 			</div>
 
-			<div className="grid gap-4 lg:grid-cols-[260px,1fr]">
-				<aside className="rounded-2xl border border-surface-600 bg-surface-700 p-4 shadow-soft">
+			<div className="grid gap-5 lg:grid-cols-5">
+				<aside className="lg:col-span-1  rounded-2xl border border-surface-600 bg-surface-700 p-4 shadow-soft">
 					<p className="text-lg font-normal text-ink-50">Danh mục</p>
 					<div className="mt-3 space-y-2">
 						{categories.map((cat) => {
@@ -152,7 +152,7 @@ const ProductsPage = () => {
 					</div>
 				</aside>
 
-				<main className="space-y-4">
+				<main className="lg:col-span-4 space-y-4">
 					<div className="rounded-2xl border border-surface-600 bg-surface-700 p-4 shadow-soft">
 						<div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
 							{filteredProducts.map((product) => {
