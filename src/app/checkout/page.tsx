@@ -62,15 +62,6 @@ const CheckoutPage = () => {
 
 	return (
 		<div className="space-y-6 p-4">
-			<header className="box p-4 text-ink-50">
-				<h1 className="mt-2 text-2xl text-ink-50">
-					Thanh toán đơn hàng
-				</h1>
-				<p className="text-sm text-ink-100/80">
-					Nhập email để nhận key/giftcard ngay sau khi hoàn tất thanh
-					toán.
-				</p>
-			</header>
 			<div className="grid gap-6 lg:grid-cols-[1.4fr,1fr]">
 				<section className="box space-y-4 p-5 text-ink-50">
 					<h2 className="text-lg text-ink-50">Sản phẩm</h2>

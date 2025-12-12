@@ -1,21 +1,89 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-:root {
-	color-scheme: dark;
+@theme {
+	/* --- Fonts --- */
+	--font-sans: "League Spartan", "League Spartan Fallback", system-ui,
+		-apple-system, "Segoe UI", sans-serif;
+
+	/* --- Radius --- */
+	--radius-xl: 12px;
+	--radius-2xl: 16px; /* Khôi phục độ bo góc gốc */
+
+	/* --- Shadows (Khôi phục shadow gốc) --- */
+	--shadow-soft: 0 10px 40px rgba(0, 0, 0, 0.25);
+
+	/* --- COLORS: ORIGINAL PALETTE --- */
+
+	/* Primary */
+	--color-primary-50: #e7e9f2;
+	--color-primary-100: #cfd3e5;
+	--color-primary-200: #b7bed7;
+	--color-primary-300: #a0a9ca;
+	--color-primary-400: #8895bd;
+	--color-primary-500: #7181b0;
+	--color-primary-600: #596da4;
+	--color-primary-700: #405b97; /* Màu nút gốc */
+	--color-primary-800: #21498a; /* Màu hover border gốc */
+	--color-primary-900: #0062ff; /* Brand Blue */
+	--color-primary-DEFAULT: #405b97;
+
+	/* Background */
+	--color-background-950: #171717;
+	--color-background-900: #020617;
+	--color-background-800: #020617;
+
+	/* Ink */
+	--color-ink-50: #ffffff;
+	--color-ink-100: #f5f5f5;
+	--color-ink-200: #e5e5e5;
+	--color-ink-300: #d4d4d4;
+	--color-ink-400: #a3a3a3;
+	--color-ink-500: #737373;
+	--color-ink-600: #525252;
+	--color-ink-700: #404040;
+	--color-ink-800: #262626;
+	--color-ink-900: #171717;
+
+	/* Surface */
+	--color-surface-50: #c4c4c4;
+	--color-surface-100: #a7a7a7;
+	--color-surface-200: #8b8b8b;
+	--color-surface-300: #717171;
+	--color-surface-400: #575757;
+	--color-surface-500: #3f3f3f;
+	--color-surface-600: #282828;
+	--color-surface-700: #171717;
+
+	/* Status Colors */
+	--color-success-500: #22946e;
+	--color-success-400: #47d5a6;
+	--color-success-300: #9ae8ce;
+
+	--color-warning-500: #a87a2a;
+	--color-warning-400: #d7ac61;
+	--color-warning-300: #ecd7b2;
+
+	--color-danger-500: #9c2121;
+	--color-danger-400: #d94a4a;
+	--color-danger-300: #eb9e9e;
+
+	--color-info-500: #21498a;
+	--color-info-400: #4077d1;
+	--color-info-300: #92b2e5;
 }
 
-* {
-	box-sizing: border-box;
-}
-
+/* --- Base Styles --- */
 @layer base {
 	html,
 	body {
-		@apply font-normal antialiased text-ink-50;
+		font-family: var(--font-sans);
+		color: var(--color-ink-100); /* Màu chữ xám sáng dễ đọc */
 		margin: 0;
-		background: radial-gradient(
+		min-height: 100vh;
+
+		/* Nền màu đen xanh #020617 đặc trưng, giữ gradient nhẹ cho đỡ nhàm chán nhưng không làm mờ */
+		background-color: var(--color-background-950);
+		background-image: radial-gradient(
 				circle at 12% 18%,
 				rgba(105, 105, 105, 0.08),
 				transparent 28%
@@ -26,69 +94,102 @@
 				transparent 32%
 			),
 			linear-gradient(145deg, #121212, #040404 45%, #000000);
-		color: #ffffff;
-		font-family: var(--font-league-spartan), "League Spartan Fallback",
-			system-ui, -apple-system, "Segoe UI", sans-serif;
-		min-height: 100vh;
+		background-attachment: fixed;
 	}
 
 	h1,
 	h2,
-	h3 {
-		@apply text-ink-50 font-normal; /* Đổi font-semibold thành font-normal */
+	h3,
+	h4 {
+		color: var(--color-ink-50);
+		font-weight: 400;
 	}
 
 	p,
 	a,
 	span {
-		@apply text-ink-100 font-normal; /* Thêm font-normal */
+		color: var(--color-ink-100);
+		font-weight: 400;
 	}
 
 	a {
-		@apply no-underline;
+		text-decoration: none;
+		transition: color 200ms;
 	}
 }
 
+/* --- Component Utilities --- */
 @layer components {
+	/* Box: Nền đặc (bg-surface-700), có viền (border-surface-600), có shadow */
 	.box {
 		@apply rounded-2xl border border-surface-600 bg-surface-700 shadow-soft;
 	}
 
+	/* Card: Có viền, nền đặc, Hover đổi màu viền (như gốc) */
 	.card {
-		@apply rounded-2xl border border-surface-600 bg-surface-700 p-3 shadow-soft transition hover:border-primary-800;
+		@apply rounded-2xl border border-surface-600 bg-surface-700 p-3 shadow-soft transition duration-200;
+	}
+	.card:hover {
+		@apply border-primary-800; /* Hover viền xanh đậm */
 	}
 
+	/* Input: Có viền, nền đặc */
 	.input {
 		@apply w-full rounded-2xl border border-surface-600 bg-surface-700 px-3 py-2 text-ink-100;
 	}
+	.input:focus {
+		@apply outline-none ring-1 ring-primary-900 border-primary-900;
+	}
 
+	/* Buttons */
 	.btn {
-		@apply inline-flex items-center justify-center gap-2 rounded-3xl px-4 py-2 text-sm font-normal transition-colors duration-200; /* Đổi font-medium thành font-normal */
+		@apply inline-flex items-center justify-center gap-2 rounded-3xl px-4 py-2 text-sm font-normal transition-colors duration-200;
 	}
 
+	/* Nút Primary: Màu gốc bg-primary-700 */
 	.btn-primary {
-		@apply bg-primary-700 text-ink-50 hover:bg-primary-600;
+		@apply bg-primary-700 text-ink-50;
+	}
+	.btn-primary:hover {
+		@apply bg-primary-600;
 	}
 
+	/* Nút Info */
 	.btn-info {
-		@apply bg-info-400 text-ink-50 hover:bg-info-300;
+		@apply bg-info-500 text-ink-50;
+	}
+	.btn-info:hover {
+		@apply bg-info-400;
 	}
 
+	/* Nút Ghost: Viền trong suốt */
 	.btn-ghost {
-		@apply border border-transparent text-ink-100 hover:border-primary-500 hover:text-ink-50;
+		@apply border border-transparent text-ink-100;
+	}
+	.btn-ghost:hover {
+		@apply border-primary-500 text-ink-50;
 	}
 
+	/* Nút Light */
 	.btn-light {
-		@apply border border-transparent bg-white text-black hover:bg-white/90;
+		@apply border border-transparent bg-white text-black;
 	}
-}
-@layer utilities {
-	.border-white-custom {
-		@apply border border-surface-400;
+	.btn-light:hover {
+		@apply bg-white/90;
 	}
-}
 
-a {
-	color: inherit;
-	text-decoration: none;
+	/* Scrollbar */
+	::-webkit-scrollbar {
+		width: 6px;
+	}
+	::-webkit-scrollbar-track {
+		background: transparent;
+	}
+	::-webkit-scrollbar-thumb {
+		background-color: var(--color-surface-600);
+		border-radius: 9999px;
+	}
+	::-webkit-scrollbar-thumb:hover {
+		background-color: var(--color-primary-700);
+	}
 }

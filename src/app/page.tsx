@@ -17,8 +17,6 @@ export const metadata: Metadata = {
 	title: "CS2Prime.store - Hệ thống tài khoản CS2 & Dịch vụ Steam",
 };
 
-export const revalidate = 0;
-
 const buildCategoryItems = (
 	categories: Awaited<ReturnType<typeof fetchCategories>>,
 ) =>
@@ -26,12 +24,7 @@ const buildCategoryItems = (
 		.filter((cat) => cat.id !== "all")
 		.map((cat) => ({
 			title: cat.name,
-			tag:
-				cat.sold !== undefined
-					? `Đã bán ${cat.sold}`
-					: cat.count !== undefined
-					? `${cat.count} sản phẩm`
-					: "Xem chi tiết",
+			tag: cat.sold !== undefined ? `Đã bán ${cat.sold}` : "Xem chi tiết",
 			href: cat.href ?? `/products/${cat.id}`,
 		}));
 

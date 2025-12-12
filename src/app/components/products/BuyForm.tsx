@@ -59,7 +59,7 @@ export const BuyForm = ({ selectedItem }: OrderFormProps) => {
 	};
 
 	return (
-		<div className="box px-5">
+		<div className="box p-5">
 			<form key={submissionKey} action={formAction} className="space-y-4">
 				<HiddenOrderFields
 					selectedItem={selectedItem}

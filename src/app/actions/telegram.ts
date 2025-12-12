@@ -1,11 +1,7 @@
 "use server";
 
 import { z } from "zod";
-
-// --- Telegram API Configuration ---
-// IMPORTANT: These should be stored in environment variables.
-const botToken = process.env.TELEGRAM_BOT_TOKEN;
-const chatId = process.env.TELEGRAM_CHAT_ID;
+import { TelegramService } from "@/services/telegramService";
 
 // --- Input Validation Schemas ---
 const BaseOrderSchema = z.object({
@@ -26,6 +22,22 @@ const SellOrderSchema = BaseOrderSchema.extend({
 	accountName: z.string().min(1, "Tên tài khoản là bắt buộc."),
 });
 
+const CheckoutOrderSchema = z.object({
+	email: z.string().email("Email không hợp lệ"),
+	note: z.string().optional(),
+	totalValue: z.coerce.number(),
+	orderId: z.string(),
+	items: z.array(
+		z.object({
+			id: z.string(),
+			name: z.string(),
+			price: z.string(),
+			quantity: z.number(),
+			note: z.string().optional(),
+		}),
+	),
+});
+
 export type FormState = {
 	message: string;
 	errors?: Record<string, string[] | undefined>;
@@ -38,20 +50,11 @@ export type FormState = {
 	timestamp?: number;
 };
 
-// --- Server Action to Send Telegram Message ---
+// --- Server Action: Quick Buy/Sell ---
 export async function sendTelegramOrder(
 	prevState: FormState,
 	formData: FormData,
 ): Promise<FormState> {
-	if (!botToken || !chatId) {
-		console.error("Telegram Bot Token or Chat ID is not configured.");
-		return {
-			message:
-				"Lỗi cấu hình: Vui lòng thiết lập biến môi trường cho Telegram.",
-			success: false,
-		};
-	}
-
 	const selectedItemId = formData.get("selectedItemId") as string;
 	const isBuyOrder =
 		selectedItemId === "duelbuy" || selectedItemId === "empirebuy";
@@ -79,110 +82,33 @@ export async function sendTelegramOrder(
 		};
 	}
 
-	const {
-		productName,
-		unitPrice,
-		totalAmount,
-		amount,
-		sellId,
-		orderId,
-	} = validatedFields.data;
+	// Logic gọi Telegram đã được tách ra Service
+	const messageText = TelegramService.formatOrderMessage(
+		validatedFields.data,
+		isBuyOrder,
+	);
+	const isSent = await TelegramService.sendMessage(messageText);
 
-	const formatPrice = (value: number) =>
-		value.toLocaleString("vi-VN", { style: "currency", currency: "VND" });
-
-	// --- Format the message for Telegram ---
-	let bankInfo = "";
-	if (!isBuyOrder) {
-		const { bank, account, accountName } = validatedFields.data as z.infer<typeof SellOrderSchema>;
-		bankInfo = `
-**Ngân hàng:** \`${bank}\`
-**Số tài khoản:** \`${account}\`
-**Tên chủ tài khoản:** \`${accountName}\`
-`;
-	}
-
-	const messageText = `
-ĐƠN HÀNG MỚI
-**Order ID:** \`${orderId}\`
-**Sản phẩm:** ***${productName}***
-**Đơn giá:** ${formatPrice(unitPrice)}
-**Số lượng:** ${amount}
-**THÀNH TIỀN:** \`${formatPrice(totalAmount)}\`
---------------------
-**ID Bán:** \`${sellId}\`
-${bankInfo}
---------------------
-`;
-
-	const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
-
-	try {
-		const response = await fetch(url, {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				chat_id: chatId,
-				text: messageText,
-				parse_mode: "Markdown",
-			}),
-		});
-
-		const result = await response.json();
-
-		if (!result.ok) {
-			console.error("Telegram API error:", result);
-			return {
-				message: `Không gửi được đơn hàng. Lỗi từ Telegram: ${result.description}`,
-				success: false,
-			};
-		}
-
-		return {
-			message: "Đơn hàng của bạn đã được gửi thành công!",
-			success: true,
-			data: validatedFields.data,
-			timestamp: new Date().getTime(),
-		};
-	} catch (error) {
-		console.error("Failed to send Telegram message:", error);
+	if (!isSent) {
 		return {
 			message:
 				"Không thể kết nối đến dịch vụ Telegram. Vui lòng thử lại sau.",
 			success: false,
 		};
 	}
+
+	return {
+		message: "Đơn hàng của bạn đã được gửi thành công!",
+		success: true,
+		data: validatedFields.data,
+		timestamp: new Date().getTime(),
+	};
 }
 
-const CheckoutOrderSchema = z.object({
-	email: z.string().email("Email không hợp lệ"),
-	note: z.string().optional(),
-	totalValue: z.coerce.number(),
-	orderId: z.string(),
-	items: z.array(
-		z.object({
-			id: z.string(),
-			name: z.string(),
-			price: z.string(),
-			quantity: z.number(),
-			note: z.string().optional(),
-		}),
-	),
-});
-
+// --- Server Action: Checkout Cart ---
 export async function sendTelegramCheckoutOrder(
 	data: z.infer<typeof CheckoutOrderSchema>,
 ): Promise<{ success: boolean; message: string }> {
-	if (!botToken || !chatId) {
-		console.error("Telegram Bot Token or Chat ID is not configured.");
-		return {
-			message: "Lỗi cấu hình hệ thống.",
-			success: false,
-		};
-	}
-
 	const validation = CheckoutOrderSchema.safeParse(data);
 
 	if (!validation.success) {
@@ -192,67 +118,19 @@ export async function sendTelegramCheckoutOrder(
 		};
 	}
 
-	const { email, note, totalValue, orderId, items } = validation.data;
+	// Logic gọi Telegram đã được tách ra Service
+	const messageText = TelegramService.formatCheckoutMessage(validation.data);
+	const isSent = await TelegramService.sendMessage(messageText);
 
-	const formatCurrency = (value: number) =>
-		value.toLocaleString("vi-VN", { style: "currency", currency: "VND" });
-
-	const itemsList = items
-		.map(
-			(item, index) =>
-				`${index + 1}. **${item.name}**
-   - SL: ${item.quantity}
-   - Giá: ${item.price}
-   ${item.note ? `- Note: ${item.note}` : ""}`,
-		)
-		.join("\n");
-
-	const messageText = `
-ĐƠN HÀNG CHECKOUT MỚI
-**Order ID:** \`${orderId}\`
-**Email:** \`${email}\`
-**Ghi chú:** ${note || "Không có"}
---------------------
-**Sản phẩm:**
-${itemsList}
---------------------
-**TỔNG TIỀN:** \`${formatCurrency(totalValue)}\`
-`;
-
-	const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
-
-	try {
-		const response = await fetch(url, {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				chat_id: chatId,
-				text: messageText,
-				parse_mode: "Markdown",
-			}),
-		});
-
-		const result = await response.json();
-
-		if (!result.ok) {
-			console.error("Telegram API error:", result);
-			return {
-				message: "Gửi đơn hàng thất bại.",
-				success: false,
-			};
-		}
-
+	if (!isSent) {
 		return {
-			message: "Đơn hàng đã được gửi thành công!",
-			success: true,
-		};
-	} catch (error) {
-		console.error("Failed to send Telegram message:", error);
-		return {
-			message: "Lỗi kết nối.",
+			message: "Lỗi kết nối hoặc cấu hình bot Telegram.",
 			success: false,
 		};
 	}
+
+	return {
+		message: "Đơn hàng đã được gửi thành công!",
+		success: true,
+	};
 }
