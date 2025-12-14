@@ -6,6 +6,7 @@ import { FaStar, FaStarHalfAlt } from "react-icons/fa";
 
 type CardItem = {
 	id: string;
+    name:string;
 	title: string;
 	tag?: string;
 	href: string;
@@ -16,12 +17,10 @@ type CardItem = {
 	status?: boolean;
 };
 
-const PorpularCard = ({
+const HomePorpular = ({
 	items,
-	hrefLabel,
 }: {
 	items: CardItem[];
-	hrefLabel?: string;
 }) => {
 	const placeholderImg = "/assets/placeholder-card.svg";
 
@@ -34,7 +33,7 @@ const PorpularCard = ({
 				<Link
 					href="/products"
 					className="text-sm font-semibold hover:text-primary-400">
-					{hrefLabel || "Xem thêm"}
+					{"Xem thêm"}
 				</Link>
 			</div>
 			<div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
@@ -56,7 +55,7 @@ const PorpularCard = ({
 									? ""
 									: "pointer-events-none opacity-60"
 							}`}>
-							<div className="relative w-24 aspect-[522/653] flex-shrink-0 overflow-hidden rounded-2xl">
+							<div className="relative w-24 aspect-522/653 shrink-0 overflow-hidden rounded-2xl">
 								<Image
 									src={card.image || placeholderImg}
 									alt={card.title}
@@ -110,4 +109,4 @@ const PorpularCard = ({
 	);
 };
 
-export default PorpularCard;
+export default HomePorpular;

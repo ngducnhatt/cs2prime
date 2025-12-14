@@ -2,22 +2,26 @@ type AmountInputProps = {
 	amount: number;
 	setAmount: (amount: number) => void;
 	error?: string[];
+	categoryId?: string;
 };
 
-export const AmountInput = ({ amount, setAmount, error }: AmountInputProps) => {
+export const AmountInput = ({ amount, setAmount, error, categoryId }: AmountInputProps) => {
+	const isSpecialCategory = categoryId === "csgoempire" || categoryId === "duel";
+	const minValue = isSpecialCategory ? 0.01 : 10;
 	return (
 		<div className="space-y-1 pt-1">
 			<label
 				className="block text-sm font-medium text-ink-50"
 				htmlFor="order-amount">
-				Số lượng (tối thiểu 10)
+				Số lượng (tối thiểu {minValue})
 			</label>
 			<input
 				className="input"
 				id="order-amount"
 				name="amount"
 				type="number"
-				min="10"
+				min={minValue}
+				step={isSpecialCategory ? "0.01" : "1"}
 				value={amount}
 				onChange={(e) => setAmount(Number(e.target.value))}
 				required

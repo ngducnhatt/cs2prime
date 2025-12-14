@@ -43,11 +43,10 @@ export const fetchHeroSections = async (): Promise<HeroSlide[]> => {
 		const { data, error } = await supabase
 			.from("hero_sections")
 			.select(
-				"title,subtitle,description,image,href,ctalabel,status,priority,created_at",
+				"title,subtitle,description,image,href,ctalabel,status,priority",
 			)
 			.eq("status", true)
-			.order("priority", { ascending: true })
-			.order("created_at", { ascending: true });
+			.order("priority", { ascending: true });
 
 		if (error) {
 			console.error("fetchHeroSections error:", error.message);
@@ -109,9 +108,9 @@ export const fetchServices = async (): Promise<Service[]> => {
 	try {
 		const { data, error } = await supabase
 			.from("services")
-			.select("id, name, description, status, created_at") // Chỉ lấy cột cần thiết
-			.eq("status", true) // QUAN TRỌNG: Chỉ lấy dịch vụ đang bật
-			.order("created_at", { ascending: true }); // Sắp xếp cũ -> mới
+			.select("id, name, description, status,href, created_at")
+			.eq("status", true)
+			.order("created_at", { ascending: true });
 
 		if (error) {
 			console.error("fetchServices error:", error.message);
@@ -120,14 +119,48 @@ export const fetchServices = async (): Promise<Service[]> => {
 
 		return (data || []).map((row) => ({
 			id: row.id,
-			// Hỗ trợ cả trường 'name' hoặc 'title' tùy database của bạn
 			title: row.name,
 			description: row.description || "",
+            href: row.href || "",
 			status: toBooleanStatus(row.status),
 		}));
 	} catch (err) {
 		console.error("fetchServices exception:", err);
 		return [];
+	}
+};
+
+export const fetchServiceBySlug = async (
+	slug: string,
+): Promise<Service | null> => {
+	const supabase = getSupabaseClient();
+	if (!supabase) return null;
+
+	try {
+		const { data, error } = await supabase
+			.from("services")
+			.select("id, name, description, status, image")
+			.eq("id", slug)
+			.eq("status", true)
+			.single();
+
+		if (error || !data) {
+			console.error(
+				`fetchServiceBySlug for slug "${slug}" error:`,
+				error?.message,
+			);
+			return null;
+		}
+
+		return {
+			id: data.id,
+			title: data.name,
+			description: data.description || "",
+			status: toBooleanStatus(data.status),
+		};
+	} catch (err) {
+		console.error(`fetchServiceBySlug for slug "${slug}" exception:`, err);
+		return null;
 	}
 };
 
@@ -196,7 +229,6 @@ export const fetchDeals = async () => {
 	const products = await fetchAllProducts();
 	const withSale = products.filter((p) => p.save);
 
-	// Nếu không có sản phẩm giảm giá, fallback về sản phẩm bán chạy
 	const source = withSale.length
 		? withSale
 		: products.sort((a, b) => (b.sold || 0) - (a.sold || 0));

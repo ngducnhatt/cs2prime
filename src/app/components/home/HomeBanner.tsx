@@ -7,11 +7,11 @@ import type { HeroSlide } from "@/lib/types";
 
 const AUTOPLAY_DELAY = 10000;
 
-type HeroBannerProps = {
+type HomeBannerProps = {
 	slides: HeroSlide[];
 };
 
-const HeroBanner = ({ slides }: HeroBannerProps) => {
+const HomeBanner = ({ slides }: HomeBannerProps) => {
 	const [active, setActive] = useState(0);
 	const autoplayRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -46,7 +46,7 @@ const HeroBanner = ({ slides }: HeroBannerProps) => {
 
 	if (!slides.length) return null;
 
-	const mainHeights = "h-[200px] sm:h-[260px] md:h-[320px] lg:h-[380px]";
+	const mainHeights = "h-50";
 
 	return (
 		<section className="relative isolate overflow-hidden rounded-3xl ">
@@ -61,7 +61,7 @@ const HeroBanner = ({ slides }: HeroBannerProps) => {
 							key={`${slide.title}-${idx}`}
 							className="min-w-full shrink-0 overflow-hidden rounded-3xl">
 							<div
-								className={`relative w-full overflow-hidden rounded-3xl bg-gradient-to-r from-primary-800 via-primary-600 to-primary-300 p-6 text-ink-50 shadow-soft sm:p-8 ${mainHeights}`}>
+								className={`relative w-full overflow-hidden rounded-3xl bg-linear-to-r from-primary-800 via-primary-600 to-primary-300 p-6 text-ink-50 shadow-soft sm:p-8 ${mainHeights}`}>
 								<div className="flex h-full flex-col gap-3 md:flex-row md:items-center md:justify-between">
 									<div className="space-y-2 md:max-w-md">
 										<p className="text-xs font-thin uppercase tracking-[0.5em]">
@@ -92,7 +92,7 @@ const HeroBanner = ({ slides }: HeroBannerProps) => {
 											className="object-cover transition duration-700 hover:scale-105"
 											priority={idx === 0}
 										/>
-										<div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent" />
+										<div className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/35 via-transparent to-transparent" />
 									</div>
 								</div>
 							</div>
@@ -103,12 +103,12 @@ const HeroBanner = ({ slides }: HeroBannerProps) => {
 				<button
 					type="button"
 					onClick={handlePrev}
-					className="absolute left-0 top-0 z-10 hidden h-full w-14 items-center justify-center bg-gradient-to-r from-black/35 via-black/20 to-transparent text-white transition md:flex md:pointer-events-none md:opacity-0 md:group-hover:pointer-events-auto md:group-hover:opacity-100"
+					className="absolute left-0 top-0 z-10 hidden h-full w-14 items-center justify-center bg-linear-to-r from-black/35 via-black/20 to-transparent text-white transition md:flex md:pointer-events-none md:opacity-0 md:group-hover:pointer-events-auto md:group-hover:opacity-100"
 					aria-label="Slide truoc"></button>
 				<button
 					type="button"
 					onClick={handleNext}
-					className="absolute right-0 top-0 z-10 hidden h-full w-14 items-center justify-center bg-gradient-to-l from-black/35 via-black/20 to-transparent text-white transition md:flex md:pointer-events-none md:opacity-0 md:group-hover:pointer-events-auto md:group-hover:opacity-100"
+					className="absolute right-0 top-0 z-10 hidden h-full w-14 items-center justify-center bg-linear-to-l from-black/35 via-black/20 to-transparent text-white transition md:flex md:pointer-events-none md:opacity-0 md:group-hover:pointer-events-auto md:group-hover:opacity-100"
 					aria-label="Slide tiep"></button>
 
 				<div className="absolute bottom-4 left-1/2 z-10 flex -translate-x-1/2 items-center gap-3">
@@ -132,14 +132,4 @@ const HeroBanner = ({ slides }: HeroBannerProps) => {
 	);
 };
 
-export default HeroBanner;
-
-
-
-
-
-
-
-
-
-
+export default HomeBanner;

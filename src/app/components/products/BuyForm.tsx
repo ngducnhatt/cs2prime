@@ -10,14 +10,15 @@ import { AmountInput } from "./AmountInput";
 import { SellIdInput } from "./SellIdInput";
 import { OrderConfirmation } from "./OrderConfirmation";
 
-export const BuyForm = ({ selectedItem }: OrderFormProps) => {
+export const BuyForm = ({ selectedItem, categoryId }: OrderFormProps) => {
 	// cho phép đổi orderId sau mỗi lần đóng popup
 	const [orderId, setOrderId] = useState(() => `CS2PRIME${Date.now()}`);
 
 	const initialState: FormState = { message: "", success: false, errors: {} };
 	const [state, formAction] = useActionState(sendTelegramOrder, initialState);
-
-	const [amount, setAmount] = useState(10);
+	const isSpecialCategory = categoryId === "csgoempire" || categoryId === "duel";
+	const initialAmount = isSpecialCategory ? 0.01 : 10;
+	const [amount, setAmount] = useState(initialAmount);
 	const unitPrice = selectedItem.price || 0;
 	const totalAmount = unitPrice * amount;
 
@@ -50,7 +51,7 @@ export const BuyForm = ({ selectedItem }: OrderFormProps) => {
 		}
 
 		// reset form
-		setAmount(10);
+		setAmount(initialAmount);
 		setSellId("");
 		setSubmissionKey(Date.now()); // force remount form
 
@@ -72,6 +73,7 @@ export const BuyForm = ({ selectedItem }: OrderFormProps) => {
 					amount={amount}
 					setAmount={setAmount}
 					error={state.errors?.amount}
+					categoryId={categoryId}
 				/>
 
 				<SellIdInput

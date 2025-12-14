@@ -20,9 +20,9 @@ const ContactContent = () => {
 	};
 
 	return (
-		<div className="space-y-6">
-			<div className="grid gap-6 rounded-2xl border border-surface-600 bg-surface-700 p-6 shadow-soft lg:grid-cols-[320px,1fr]">
-				<aside className="flex flex-col justify-between rounded-2xl bg-ink-950 p-4 text-ink-50">
+		<div className="mt-10 space-y-6">
+			<div className="grid gap-5 lg:grid-cols-5 rounded-2xl border border-surface-600 bg-surface-700 p-6 shadow-soft">
+				<aside className="lg:col-span-2 flex flex-col justify-between rounded-2xl bg-ink-950 p-4 text-ink-50">
 					<div className="space-y-3">
 						<div className="relative h-40 w-full overflow-hidden rounded-xl">
 							<Image
@@ -40,13 +40,13 @@ const ContactContent = () => {
 						<p className="text-sm text-ink-100/80">
 							Chúng tôi hỗ trợ 24/7. Bạn có thể chat trực tiếp
 							hoặc gửi email để nhận phản hồi nhanh nhất từ đội
-							ngũ chăm sóc khách hàng của <span>CS2Prime.store</span>
-							.
+							ngũ chăm sóc khách hàng của{" "}
+							<span>CS2Prime.store</span>.
 						</p>
 					</div>
 				</aside>
 
-				<section className="space-y-6">
+				<section className="lg:col-span-3 space-y-6">
 					<div className="rounded-2xl bg-ink-950 p-5">
 						<h3 className="text-lg font-normal text-ink-50">
 							Liên hệ với chúng tôi qua
@@ -54,7 +54,9 @@ const ContactContent = () => {
 
 						<div className="mt-4 grid gap-2 md:grid-cols-3">
 							<button className="flex items-center gap-2 card px-3 py-2 text-left text-sm font-semibold text-ink-50">
-								<a href="">Facebook</a>
+								<a href="https://www.facebook.com/profile.php?id=61579789322561">
+									Facebook
+								</a>
 							</button>
 							<button className="flex items-center gap-2 card px-3 py-2 text-left text-sm font-semibold text-ink-50">
 								<span>Telegram</span>

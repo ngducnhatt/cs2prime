@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 
-import CategoryCard from "./components/home/CategoryCard";
-import FeatureGrid from "./components/home/FeatureCard";
-import HeroBanner from "./components/home/HeroBanner";
-import PorpularCard from "./components/home/PorpularCard";
-import SaleCard from "./components/home/SaleCard";
+import HomeCategory from "@/app/components/home/HomeCategory";
+import FeatureGrid from "@/app/components/home/FeatureCard";
+import HomeBanner from "@/app/components/home/HomeBanner";
+import HomePorpular from "@/app/components/home/HomePorpular";
+import HomeSale from "@/app/components/home/HomeSale";
 import {
 	fetchCategories,
 	fetchDeals,
@@ -14,7 +14,7 @@ import {
 } from "@/lib/data";
 
 export const metadata: Metadata = {
-	title: "CS2Prime.store - Hệ thống tài khoản CS2 & Dịch vụ Steam",
+	title: "CS2Prime.store - Hệ thống dịch vụ CS2 & Dịch vụ Steam",
 };
 
 const buildCategoryItems = (
@@ -49,11 +49,12 @@ export default async function Home() {
 
 	return (
 		<div className=" px-4 py-10 md:py-12 space-y-10">
-			<HeroBanner slides={heroSlides} />
-			<SaleCard deals={deals} />
-			<PorpularCard
+			<HomeBanner slides={heroSlides} />
+			<HomeSale deals={deals} />
+			<HomePorpular
 				items={popularItems.map((item) => ({
 					...item,
+					name: item.title,
 					href: `/products/${item.categoryId}`,
 					tag: item.save ? `Giảm ${item.save}` : undefined,
 					priceRange:
@@ -65,12 +66,12 @@ export default async function Home() {
 				}))}
 			/>
 			<div className="grid gap-20 lg:grid-cols-2">
-				<CategoryCard
+				<HomeCategory
 					title="Hệ sinh thái Steam"
 					href="/products"
 					items={buildCategoryItems(categories)}
 				/>
-				<CategoryCard
+				<HomeCategory
 					title="Dịch vụ tiện ích"
 					href="/services"
 					items={buildServiceItems(services)}

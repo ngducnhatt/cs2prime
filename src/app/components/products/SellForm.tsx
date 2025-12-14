@@ -9,12 +9,14 @@ import { AmountInput } from "./AmountInput";
 import { SellIdInput } from "./SellIdInput";
 import { OrderConfirmation } from "./OrderConfirmation";
 
-export const SellForm = ({ selectedItem, banks = [] }: OrderFormProps) => {
+export const SellForm = ({ selectedItem, banks = [], categoryId }: OrderFormProps) => {
 	const [orderId] = useState(() => `CS2PRIME${Date.now()}`);
 	const initialState: FormState = { message: "", success: false, errors: {} };
 	const [state, formAction] = useActionState(sendTelegramOrder, initialState);
 
-	const [amount, setAmount] = useState(10);
+	const isSpecialCategory = categoryId === "csgoempire" || categoryId === "duel";
+	const initialAmount = isSpecialCategory ? 0.01 : 10;
+	const [amount, setAmount] = useState(initialAmount);
 	const unitPrice = selectedItem.price || 0;
 	const totalAmount = unitPrice * amount;
 
@@ -28,7 +30,7 @@ export const SellForm = ({ selectedItem, banks = [] }: OrderFormProps) => {
 	const [copied, setCopied] = useState(false);
 	const MY_ID_STEAM =
 		selectedItem.id === "empiresell"
-			? "76561199874889649"
+			? "76561198769102278"
 			: selectedItem.id === "duelsell"
 			? "qexc"
 			: "";
@@ -73,6 +75,7 @@ export const SellForm = ({ selectedItem, banks = [] }: OrderFormProps) => {
 					amount={amount}
 					setAmount={setAmount}
 					error={state.errors?.amount}
+					categoryId={categoryId}
 				/>
 				<SellIdInput
 					sellId={sellId}

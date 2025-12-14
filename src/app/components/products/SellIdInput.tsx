@@ -10,7 +10,7 @@ export const SellIdInput = ({ sellId, setSellId, error }: SellIdInputProps) => {
 			<label
 				className="block text-sm font-medium text-ink-50"
 				htmlFor="order-id">
-				ID Bán (id steam)
+				ID của bạn
 			</label>
 			<input
 				className="input"

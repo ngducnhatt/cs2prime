@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import { League_Spartan } from "next/font/google";
 import "./globals.css";
 
-import Header from "@/app/components/UI/Header";
-import Footer from "@/app/components/UI/Footer";
+import Header from "@/app/components/home/Header";
+import Footer from "@/app/components/home/Footer";
 import { CartProvider } from "@/app/context/CartContext";
-import ScrollTopButton from "./components/UI/ScrollTopButton";
+import ScrollTopButton from "./components/ScrollTopButton";
 
 const leagueSpartan = League_Spartan({
 	variable: "--font-league-spartan",
@@ -64,7 +64,7 @@ export default function RootLayout({
 	return (
 		<html lang="vi" suppressHydrationWarning>
 			<body
-				className={`${leagueSpartan.variable} bg-[var(--bg-primary)] text-ink-50`}>
+				className={`${leagueSpartan.variable} bg-(--bg-primary) text-ink-50`}>
 				<CartProvider>
 					<div className="min-h-screen flex flex-col">
 						<Header />

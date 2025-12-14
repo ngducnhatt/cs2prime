@@ -57,15 +57,16 @@ const FaceitClient = () => {
 		<div className="px-4 space-y-6">
 			<ProductImage hero={detail.hero} placeholderImg={placeholderImg} />
 			<div className="grid gap-5 lg:grid-cols-3">
-				<div className="space-y-4 lg:col-span-2">
+				<div className="space-y-6 lg:col-span-2">
 					<ProductVariants
 						variants={detail.variants}
 						selectedId={selectedItem?.id}
 						onSelect={setSelected}
 						formatPrice={formatPrice}
 					/>
+					<ProductDescription description={detail.description} />
 				</div>
-				<div className="space-y-4 lg:col-span-1">
+				<div className="space-y-6 lg:col-span-1">
 					<ProductSummary
 						quantity={quantity}
 						total={total}
@@ -77,11 +78,6 @@ const FaceitClient = () => {
 						onAddToCart={handleAddToCart}
 						formatPrice={formatPrice}
 					/>
-				</div>
-			</div>
-			<div className="grid gap-5 lg:grid-cols-3">
-				<div className="space-y-4 lg:col-span-2">
-					<ProductDescription description={detail.description} />
 				</div>
 			</div>
 		</div>

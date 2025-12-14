@@ -9,7 +9,7 @@ type Props = {
 	deals?: Deal[];
 };
 
-const SaleCard = ({ deals = [] }: Props) => {
+const HomeSale = ({ deals = [] }: Props) => {
 	return (
 		<section className="space-y-2">
 			<div className="flex items-center justify-between">
@@ -22,7 +22,7 @@ const SaleCard = ({ deals = [] }: Props) => {
 					<a
 						key={deal.id}
 						href={deal.href}
-						className={`rounded-3xl bg-gradient-to-r border border-primary-800 hover:border-primary-900 from-primary-800 via-primary-800 to-primary-700 p-3 shadow-soft`}>
+						className={`rounded-3xl bg-linear-to-r border border-primary-800 hover:border-primary-900 from-primary-800 via-primary-800 to-primary-700 p-3 shadow-soft`}>
 						<div className="rounded-lg px-2 py-2 text-ink-50">
 							<p className="mt-1 text-sm font-bold">
 								{deal.title}
@@ -39,4 +39,4 @@ const SaleCard = ({ deals = [] }: Props) => {
 	);
 };
 
-export default SaleCard;
+export default HomeSale;

@@ -59,7 +59,7 @@ const DuelClient = () => {
 					<ProductDescription description={detail.description} />
 				</div>
 				<div className="space-y-6">
-					<OrderForm selectedItem={selectedItem} banks={banks} />
+					<OrderForm selectedItem={selectedItem} banks={banks} categoryId={categoryId} />
 				</div>
 			</div>
 		</div>

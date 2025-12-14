@@ -72,6 +72,7 @@ export type ProductListItem = {
 export type OrderFormProps = {
 	selectedItem: ProductVariant;
 	banks?: Bank[];
+	categoryId?: string;
 };
 
 export type Bank = {
