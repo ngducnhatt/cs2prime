@@ -11,7 +11,7 @@ const ServiceDisplay = ({ service }: ServiceDisplayProps) => {
 		<div className="p-4 md:p-8">
 			<article className="prose prose-invert lg:prose-xl mx-auto bg-crust p-6 md:p-10 rounded-xl shadow-soft">
 				<h1>{service.title}</h1>
-				{service.image && (
+				{/* {service.image && (
 					<div className="relative h-60 w-full overflow-hidden rounded-lg my-6">
 						<Image
 							src={service.image}
@@ -21,7 +21,7 @@ const ServiceDisplay = ({ service }: ServiceDisplayProps) => {
 							className="object-cover"
 						/>
 					</div>
-				)}
+				)} */}
 				<ReactMarkdown>{service.description}</ReactMarkdown>
 			</article>
 		</div>
