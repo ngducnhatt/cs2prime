@@ -31,8 +31,9 @@ const CartContext = createContext<CartContextValue | undefined>(undefined);
 const parsePrice = (price: string | number) => {
 	if (typeof price === "number") return price;
 	if (!price) return 0;
-	const numericString = price.replace(/[^\d.]/g, "");
-	const value = parseFloat(numericString);
+	// "100.000 đ" -> "100000"
+	const numericString = price.replace(/[^\d]/g, "");
+	const value = parseInt(numericString, 10);
 	return Number.isFinite(value) ? value : 0;
 };
 
